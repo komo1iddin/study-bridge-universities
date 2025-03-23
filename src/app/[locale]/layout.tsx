@@ -18,9 +18,9 @@ export const metadata: Metadata = {
 
 interface RootLayoutProps {
   children: React.ReactNode;
-  params: {
-    locale: string;
-  };
+  params: Promise<{
+    locale: Locale;
+  }>;
 }
 
 export function generateStaticParams() {
@@ -29,30 +29,36 @@ export function generateStaticParams() {
 
 export default async function LocaleLayout({
   children,
-  params: { locale }
+  params,
 }: RootLayoutProps) {
-  // Validate that the locale is supported
-  if (!locales.includes(locale as any)) {
+  // Ожидаем получение параметров
+  const { locale } = await params;
+  
+  try {
+    if (!locales.includes(locale)) {
+      notFound();
+    }
+
+    const messages = await getTranslations(locale);
+
+    return (
+      <html lang={locale} suppressHydrationWarning>
+        <body className={`${GeistSans.variable} ${GeistMono.variable} antialiased`} suppressHydrationWarning>
+          <NextIntlClientProvider 
+            locale={locale} 
+            messages={messages}
+            timeZone="UTC"
+          >
+            <Navbar />
+            <main>
+              {children}
+            </main>
+          </NextIntlClientProvider>
+        </body>
+      </html>
+    );
+  } catch (error) {
+    console.error('Error in LocaleLayout:', error);
     notFound();
   }
-
-  // Load common translations that will be available across the app
-  const messages = await getTranslations(locale as Locale);
-
-  return (
-    <html lang={locale} suppressHydrationWarning>
-      <body className={`${GeistSans.variable} ${GeistMono.variable} antialiased`} suppressHydrationWarning>
-        <NextIntlClientProvider 
-          locale={locale} 
-          messages={messages}
-          timeZone="UTC"
-        >
-          <Navbar />
-          <main>
-            {children}
-          </main>
-        </NextIntlClientProvider>
-      </body>
-    </html>
-  );
 }

@@ -1,13 +1,9 @@
-import { createNavigation } from 'next-intl/navigation';
+// Redirect exports from index.ts
+export { Link, redirect, usePathname, useRouter } from './index';
+
 import { getRequestConfig } from 'next-intl/server';
 import type { RequestConfig } from 'next-intl/server';
 import { locales, defaultLocale } from './config';
-
-// Create navigation helpers
-export const { Link, redirect, usePathname, useRouter } = createNavigation({
-  locales,
-  localePrefix: 'as-needed'
-});
 
 // Create getTranslations function for server components
 export async function getTranslations(
@@ -49,8 +45,3 @@ export async function getMessages(locale: string = defaultLocale) {
 }
 
 // Request config for next-intl
-export default getRequestConfig(async ({ locale }) => {
-  return {
-    messages: (await getTranslations(locale || defaultLocale, ['common'])),
-  } as RequestConfig;
-}); 

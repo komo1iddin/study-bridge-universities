@@ -1,18 +1,28 @@
 import createMiddleware from 'next-intl/middleware';
-import { locales } from './src/i18n/config';
+import { locales, defaultLocale } from './src/i18n/config';
 
-// Define the default locale explicitly here to avoid import issues
-const defaultLocale = 'en';
-
+// This middleware handles i18n routing
 export default createMiddleware({
   // A list of all locales that are supported
-  locales: ['en', 'ru', 'uz'],
+  locales,
   
   // If this locale is matched, pathnames work without a prefix (e.g. `/about`)
-  defaultLocale: 'en',
+  defaultLocale,
   
-  // Locale prefix strategy
-  localePrefix: 'as-needed'
+  // Locale prefix strategy - use always to avoid redirect loops
+  localePrefix: 'always',
+  
+  // Add locale prefix for default locale to avoid redirect loops
+  defaultLocalePrefix: 'always',
+  
+  // Normalize pathnames to avoid inconsistencies
+  pathnames: {
+    '/': '/',
+    '/universities': '/universities',
+    '/programs': '/programs',
+    '/about': '/about',
+    '/contact': '/contact',
+  }
 });
 
 export const config = {

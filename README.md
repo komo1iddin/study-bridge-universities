@@ -1,45 +1,87 @@
 # Study Bridge
 
-A Next.js application with Supabase integration for local development and production.
+Study Bridge is a platform that helps international students find and apply to universities in China.
+
+## Features
+
+- Internationalization (i18n) support for English, Russian, and Uzbek
+- University catalog with detailed information
+- Program search and filtering
+- Scholarship information
+- User authentication and application tracking
+
+## Tech Stack
+
+- Next.js 15 with App Router
+- TypeScript
+- TailwindCSS
+- next-intl for internationalization
+- Supabase for backend and authentication
 
 ## Getting Started
 
 ### Prerequisites
 
-- [Node.js](https://nodejs.org/) (v18 or newer)
-- [Docker Desktop](https://www.docker.com/products/docker-desktop/)
-- [Supabase CLI](https://supabase.com/docs/guides/cli) (`brew install supabase/tap/supabase`)
+- Node.js 18.x or later
+- npm or yarn
 
-### Setup
+### Installation
 
 1. Clone the repository:
    ```bash
-   git clone <your-repository-url>
-   cd study-bridge-cursor
+   git clone <repository-url>
+   cd study-bridge
    ```
 
 2. Install dependencies:
    ```bash
    npm install
+   # or
+   yarn install
    ```
 
-3. Start the Supabase local development environment:
-   ```bash
-   supabase start
+3. Set up environment variables:
+   Create a `.env.local` file in the root directory with the following variables:
+   ```
+   NEXT_PUBLIC_SUPABASE_URL=your-supabase-url
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=your-supabase-anon-key
    ```
 
-4. Create a `.env.local` file from the example:
-   ```bash
-   cp .env.example .env.local
-   ```
-   Update the values if needed (anon key should match what's shown in the Supabase CLI output).
-
-5. Start the development server:
+4. Run the development server:
    ```bash
    npm run dev
+   # or
+   yarn dev
    ```
 
-6. Open [http://localhost:3000](http://localhost:3000) in your browser.
+5. Open [http://localhost:3000](http://localhost:3000) in your browser to see the result.
+
+## Internationalization
+
+The application supports multiple languages:
+- English (en) - default
+- Russian (ru)
+- Uzbek (uz)
+
+Translation files are located in `src/i18n/locales/{locale}` directories.
+
+## Project Structure
+
+- `src/app` - Next.js App Router pages and layouts
+- `src/components` - Reusable React components
+- `src/i18n` - Internationalization configuration and translation files
+- `src/lib` - Utility functions and database interactions
+
+## Contributing
+
+1. Create a feature branch: `git checkout -b feature/your-feature-name`
+2. Commit your changes: `git commit -m 'Add some feature'`
+3. Push to the branch: `git push origin feature/your-feature-name`
+4. Submit a pull request
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
 
 ## Supabase Integration
 
