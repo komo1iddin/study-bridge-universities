@@ -1,0 +1,203 @@
+'use client';
+
+import { createContext, useContext, useEffect, useState, ReactNode, useMemo } from 'react';
+import { supabase } from '@/lib/supabase';
+import { User as AuthUser } from '@supabase/supabase-js'; 
+import { User } from '@/types/database.types';
+import { useRouter } from 'next/navigation';
+import { getUserProfile } from '@/lib/auth';
+
+type AuthContextType = {
+  user: AuthUser | null;
+  profile: User | null;
+  isLoading: boolean;
+  error: string | null;
+  refreshProfile: () => Promise<void>;
+};
+
+const AuthContext = createContext<AuthContextType>({
+  user: null,
+  profile: null,
+  isLoading: true,
+  error: null,
+  refreshProfile: async () => {},
+});
+
+export const useAuth = () => useContext(AuthContext);
+
+type AuthProviderProps = {
+  children: ReactNode;
+};
+
+export function AuthProvider({ children }: AuthProviderProps) {
+  const [user, setUser] = useState<AuthUser | null>(null);
+  const [profile, setProfile] = useState<User | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
+
+  // Helper function to safely extract error information
+  const safeGetErrorInfo = (error: any): { message: string, code?: string, details?: string, hint?: string } => {
+    if (!error) return { message: 'Unknown error (empty error object)' };
+    
+    try {
+      // If it's a string, return it directly
+      if (typeof error === 'string') return { message: error };
+      
+      // If it has a message property, use that
+      if (error.message) return { 
+        message: error.message,
+        code: error.code,
+        details: error.details,
+        hint: error.hint
+      };
+      
+      // If we can stringify it, do so
+      return { message: JSON.stringify(error) };
+    } catch (e) {
+      // If all else fails
+      return { message: 'Error object cannot be processed' };
+    }
+  };
+
+  // Fetch user profile data
+  const fetchUserProfile = async () => {
+    if (!user) {
+      setProfile(null);
+      return;
+    }
+    
+    try {
+      // Try to get the profile directly from the database first
+      // This should now work since we've fixed the RLS policy
+      const { data: profileData, error: profileError } = await supabase
+        .from('users')
+        .select('*')
+        .eq('id', user.id)
+        .single();
+      
+      // If there's an error or no profile, try the API as a fallback
+      if (profileError || !profileData) {
+        // If the error is NOT the RLS recursion error, log it
+        if (profileError && profileError.code !== '42P17') {
+          console.log('Direct profile query failed:', safeGetErrorInfo(profileError));
+          console.log('Falling back to API method...');
+        }
+        
+        // Fallback to the API method
+        try {
+          console.log('Fetching user profile via API for userId:', user.id);
+          const response = await fetch('/api/auth/create-profile', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              userId: user.id,
+              userData: {
+                email: user.email,
+                role: 'client',
+              },
+            }),
+          });
+          
+          if (response.ok) {
+            const result = await response.json();
+            if (result && result.profile) {
+              setProfile(result.profile);
+              return;
+            } else {
+              throw new Error('Profile API call succeeded but returned no data');
+            }
+          } else {
+            const errorText = await response.text();
+            let errorMessage = `Failed to fetch/create profile: ${response.status}`;
+            try {
+              const errorJson = JSON.parse(errorText);
+              if (errorJson && errorJson.error) {
+                errorMessage = errorJson.error;
+              }
+            } catch (e) {
+              // If we can't parse JSON, use the status and text
+              errorMessage = `${errorMessage} - ${errorText || response.statusText}`;
+            }
+            throw new Error(errorMessage);
+          }
+        } catch (apiError) {
+          const errorInfo = safeGetErrorInfo(apiError);
+          console.error('Error using profile API:', errorInfo);
+          setError(errorInfo.message);
+          return;
+        }
+      } else {
+        // Profile found directly from the database
+        setProfile(profileData);
+        return;
+      }
+    } catch (err) {
+      const errorInfo = safeGetErrorInfo(err);
+      console.error('Unexpected error in profile workflow:', errorInfo);
+      setError(errorInfo.message);
+    }
+  };
+
+  // Function to refresh profile data
+  const refreshProfile = async () => {
+    await fetchUserProfile();
+  };
+
+  useEffect(() => {
+    // Initial auth state check
+    const checkUser = async () => {
+      try {
+        const { data } = await supabase.auth.getSession();
+        setUser(data.session?.user || null);
+      } catch (err) {
+        console.error('Error checking auth session:', err);
+        setError((err as Error).message);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    checkUser();
+
+    // Set up auth state change listener
+    const { data: authListener } = supabase.auth.onAuthStateChange(
+      async (event, session) => {
+        setUser(session?.user || null);
+        
+        if (event === 'SIGNED_IN' || event === 'USER_UPDATED') {
+          router.refresh();
+        }
+        
+        if (event === 'SIGNED_OUT') {
+          setProfile(null);
+          router.refresh();
+        }
+      }
+    );
+
+    return () => {
+      authListener.subscription.unsubscribe();
+    };
+  }, [router]);
+
+  // Fetch user profile when user changes
+  useEffect(() => {
+    fetchUserProfile();
+  }, [user]);
+
+  const value = useMemo(
+    () => ({
+      user,
+      profile,
+      isLoading,
+      error,
+      refreshProfile,
+    }),
+    [user, profile, isLoading, error]
+  );
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+} 

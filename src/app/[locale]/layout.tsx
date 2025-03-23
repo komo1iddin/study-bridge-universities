@@ -7,6 +7,8 @@ import { NextIntlClientProvider } from 'next-intl';
 import { getTranslations } from '@/i18n/utils';
 import { locales, Locale } from '@/i18n/config';
 import Navbar from '@/components/layout/navigation/Navbar';
+import ClientAuthWrapper from '@/components/auth/ClientAuthWrapper';
+import Footer from '@/components/layout/Footer';
 
 export const metadata: Metadata = {
   title: {
@@ -53,10 +55,13 @@ export default async function LocaleLayout({
             messages={messages}
             timeZone="UTC"
           >
-            <Navbar />
-            <main>
-              {children}
-            </main>
+            <ClientAuthWrapper>
+              <Navbar />
+              <main>
+                {children}
+              </main>
+              <Footer />
+            </ClientAuthWrapper>
           </NextIntlClientProvider>
         </body>
       </html>
