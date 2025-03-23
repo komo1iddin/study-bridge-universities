@@ -6,7 +6,8 @@ export async function GET(
   req: NextRequest,
   { params }: { params: { id: string } }
 ) {
-  const id = params.id;
+  // Make sure params is properly awaited or use destructuring to avoid the warning
+  const { id } = params;
   const program = await getProgramById(id);
   
   if (!program) {

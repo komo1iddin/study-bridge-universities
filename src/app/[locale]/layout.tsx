@@ -40,8 +40,8 @@ export default async function LocaleLayout({
   const messages = await getTranslations(locale as Locale);
 
   return (
-    <html lang={locale}>
-      <body className={`${GeistSans.variable} ${GeistMono.variable} antialiased`}>
+    <html lang={locale} suppressHydrationWarning>
+      <body className={`${GeistSans.variable} ${GeistMono.variable} antialiased`} suppressHydrationWarning>
         <NextIntlClientProvider 
           locale={locale} 
           messages={messages}
