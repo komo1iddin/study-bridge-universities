@@ -87,6 +87,11 @@ export function AuthProvider({ children }: AuthProviderProps) {
         // Fallback to the API method
         try {
           console.log('Fetching user profile via API for userId:', user.id);
+          
+          // Add a timeout to the fetch to prevent it from hanging indefinitely
+          const controller = new AbortController();
+          const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+          
           const response = await fetch('/api/auth/create-profile', {
             method: 'POST',
             headers: {
@@ -99,34 +104,74 @@ export function AuthProvider({ children }: AuthProviderProps) {
                 role: 'client',
               },
             }),
+            signal: controller.signal,
+          }).finally(() => {
+            clearTimeout(timeoutId);
           });
           
+          console.log('API Response status:', response.status);
+          
           if (response.ok) {
-            const result = await response.json();
+            const responseText = await response.text();
+            console.log('API Response text:', responseText);
+            
+            let result;
+            try {
+              result = JSON.parse(responseText);
+              console.log('Parsed result:', result);
+            } catch (parseError) {
+              console.error('Failed to parse API response:', parseError);
+              throw new Error(`Failed to parse API response: ${responseText}`);
+            }
+            
             if (result && result.profile) {
+              console.log('Setting profile from API result:', result.profile);
               setProfile(result.profile);
               return;
             } else {
-              throw new Error('Profile API call succeeded but returned no data');
+              console.error('API response missing profile data:', result);
+              throw new Error('Profile API call succeeded but returned no profile data');
             }
           } else {
-            const errorText = await response.text();
-            let errorMessage = `Failed to fetch/create profile: ${response.status}`;
+            // Log the response details to help diagnose the issue
+            console.error('API Error status:', response.status, response.statusText);
+            
+            // Attempt to read the response even if not OK
             try {
-              const errorJson = JSON.parse(errorText);
-              if (errorJson && errorJson.error) {
-                errorMessage = errorJson.error;
+              const errorText = await response.text();
+              console.error('API Error text:', errorText);
+              
+              let errorMessage = `Failed to fetch/create profile: ${response.status}`;
+              try {
+                const errorJson = JSON.parse(errorText);
+                if (errorJson && errorJson.error) {
+                  errorMessage = errorJson.error;
+                }
+              } catch (e) {
+                // If we can't parse JSON, use the status and text
+                errorMessage = `${errorMessage} - ${errorText || response.statusText}`;
               }
-            } catch (e) {
-              // If we can't parse JSON, use the status and text
-              errorMessage = `${errorMessage} - ${errorText || response.statusText}`;
+              throw new Error(errorMessage);
+            } catch (readError) {
+              // If we failed to read the response, still throw a detailed error
+              const msg = `API Error (${response.status}): Could not read response body - ${(readError as Error).message}`;
+              console.error(msg);
+              throw new Error(msg);
             }
-            throw new Error(errorMessage);
           }
         } catch (apiError) {
+          // Enhanced error handling with full details for debugging
           const errorInfo = safeGetErrorInfo(apiError);
           console.error('Error using profile API:', errorInfo);
-          setError(errorInfo.message);
+          console.error('Original error object:', apiError);
+          
+          if (apiError instanceof TypeError && apiError.message.includes('fetch')) {
+            setError('Network error connecting to profile API. Please check your connection.');
+          } else if (apiError instanceof DOMException && apiError.name === 'AbortError') {
+            setError('Profile API request timed out. Please try again.');
+          } else {
+            setError(errorInfo.message || 'Unknown error contacting profile API');
+          }
           return;
         }
       } else {
