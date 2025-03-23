@@ -12,9 +12,6 @@ export default createMiddleware({
   // Locale prefix strategy - use always to avoid redirect loops
   localePrefix: 'always',
   
-  // Add locale prefix for default locale to avoid redirect loops
-  defaultLocalePrefix: 'always',
-  
   // Normalize pathnames to avoid inconsistencies
   pathnames: {
     '/': '/',
