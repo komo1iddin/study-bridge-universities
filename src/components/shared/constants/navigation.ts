@@ -8,10 +8,6 @@ const NavigationLinks = [
     path: '/programs',
   },
   {
-    name: 'programsDemo',
-    path: '/programs-demo',
-  },
-  {
     name: 'scholarships',
     path: '/scholarships',
   },
@@ -19,6 +15,6 @@ const NavigationLinks = [
     name: 'about',
     path: '/about',
   },
-];
+] as const;
 
 export default NavigationLinks;

@@ -31,7 +31,6 @@ export default async function LocaleLayout({
   children,
   params,
 }: RootLayoutProps) {
-  // Ожидаем получение параметров
   const { locale } = await params;
   
   try {
@@ -42,8 +41,13 @@ export default async function LocaleLayout({
     const messages = await getTranslations(locale);
 
     return (
-      <html lang={locale} suppressHydrationWarning>
-        <body className={`${GeistSans.variable} ${GeistMono.variable} antialiased`} suppressHydrationWarning>
+      <html 
+        lang={locale} 
+        className="antialiased"
+      >
+        <body 
+          className={`${GeistSans.variable} ${GeistMono.variable}`}
+        >
           <NextIntlClientProvider 
             locale={locale} 
             messages={messages}

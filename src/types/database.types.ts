@@ -30,7 +30,8 @@ export type Program = {
   duration?: number | null;
   language?: 'chinese' | 'english' | 'mixed' | null;
   format?: 'fulltime' | 'online' | 'mixed' | null;
-  tuition?: number | null;
+  tuition?: number;
+  tuition_usd?: number;
   start_dates?: string[] | null;
   specialization?: string | null;
   description?: string | null;
@@ -111,4 +112,4 @@ export type Favorite = {
   user_id: string;
   program_id: string;
   created_at?: string | null;
-}; 
+};
