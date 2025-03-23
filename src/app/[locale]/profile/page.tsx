@@ -11,10 +11,12 @@ export const metadata: Metadata = {
 };
 
 export default async function ProfilePage({
-  params: { locale },
+  params,
 }: {
   params: { locale: string };
 }) {
+  const locale = params.locale;
+  
   // Create a Supabase client for server-side rendering
   const cookieStore = await cookies();
   const supabase = createServerClient(

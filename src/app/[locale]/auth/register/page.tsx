@@ -9,10 +9,11 @@ export const metadata: Metadata = {
 };
 
 export default async function RegisterPage({
-  params: { locale },
+  params,
 }: {
   params: { locale: string };
 }) {
+  const locale = params.locale;
   const translations = await getTranslations(locale, ['common']);
   const t = (key: string) => {
     const parts = key.split('.');
