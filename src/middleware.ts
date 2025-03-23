@@ -95,7 +95,7 @@ export async function middleware(req: NextRequest) {
 
 export const config = {
   matcher: [
-    // Exclude files with a dot
-    '/((?!_next/static|_next/image|favicon.ico|.*\\.).*)',
+    // Exclude files with a dot, API routes, and static assets
+    '/((?!api|_next/static|_next/image|favicon.ico|.*\\.).*)',
   ],
 }; 
