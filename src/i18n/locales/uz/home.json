@@ -1,34 +1,40 @@
 {
+  "title": "Study Bridge - Xitoydagi ta'limga yo'lingiz",
+  "description": "Study Bridge xalqaro talabalar Xitoy universitetlarini topishlari va arizalar topshirishlariga yordam beradi.",
+  
   "hero": {
-    "title": "Xitoyda o'zingiz uchun ideal universitetni toping",
-    "subtitle": "Xitoyda ta'lim olish uchun eng yaxshi universitetlar, dasturlar va stipendiyalarni o'rganing. Barcha kerakli ma'lumotlarni bir joyda oling.",
-    "browseUniversities": "Universitetlarni ko'rish",
-    "explorePrograms": "Dasturlarni o'rganish"
+    "title": "Xitoydagi sifatli ta'limga yo'lingiz",
+    "subtitle": "Bizning platformamiz orqali eng yaxshi universitetlar va dasturlarga arizalar toping va topshiring",
+    "browsePrograms": "Dasturlarni ko'rish",
+    "exploreUniversities": "Universitetlarni o'rganish"
   },
-  "universities": {
-    "title": "Top universitetlar",
-    "subtitle": "Xitoydagi mashhur universitetlarni kashf eting",
-    "viewAll": "Barchasini ko'rish"
-  },
+  
   "features": {
     "title": "Nima uchun Study Bridge'ni tanlash kerak",
-    "comprehensiveInfo": {
-      "title": "Keng qamrovli ma'lumot",
-      "description": "Universitetlar, dasturlar va stipendiyalar haqida batafsil ma'lumotlar bir joyda."
+    "find": {
+      "title": "O'zingizga mos dasturni toping",
+      "description": "Butun Xitoy bo'ylab yuzlab dasturlar va universitetlarni qidirib, solishtiring va o'zingizga mos variantni toping."
     },
-    "advancedSearch": {
-      "title": "Kengaytirilgan qidiruv",
-      "description": "Bizning kuchli filtrlarimiz yordamida ideal universitet va dasturni toping."
+    "apply": {
+      "title": "Osonlik bilan ariza topshiring",
+      "description": "Bir nechta universitetlarga ariza topshirish jarayoni soddalashtirilgan va yagona ariza profili bilan."
     },
-    "applicationTracking": {
-      "title": "Arizalarni kuzatish",
-      "description": "Arizalaringizni kuzatib boring va ularning holati haqida yangilanishlarni oling."
+    "support": {
+      "title": "To'liq qo'llab-quvvatlash",
+      "description": "Ariza topshirishdan to'liq ro'yxatdan o'tishgacha, shu jumladan viza olish va jo'nashdan oldingi tayyorgarliklar uchun ekspert yordami."
     }
   },
+  
+  "popularPrograms": {
+    "title": "Mashhur dasturlar",
+    "viewAll": "Barcha dasturlarni ko'rish",
+    "viewDetails": "Batafsil ma'lumot"
+  },
+  
   "cta": {
-    "title": "Xitoyda o'qish yo'lingizni boshlashga tayyormisiz?",
-    "subtitle": "Sevimli dasturlaringizni saqlash, arizalaringizni kuzatish va shaxsiylashtirilgan tavsiyalar olish uchun hisob yarating.",
-    "signUp": "Hozir ro'yxatdan o'ting",
-    "browseUniversities": "Universitetlarni ko'rish"
+    "title": "Sayohatingizni boshlashga tayyormisiz?",
+    "subtitle": "Dasturlarimizni o'rganish yoki shaxsiy maslahat olish uchun jamoamiz bilan bog'lanish orqali Xitoydagi sifatli ta'lim yo'lidagi birinchi qadamni tashlang.",
+    "browseButton": "Dasturlarni ko'rish",
+    "contactButton": "Biz bilan bog'lanish"
   }
 } 

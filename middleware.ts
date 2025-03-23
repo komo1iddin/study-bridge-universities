@@ -15,10 +15,16 @@ export default createMiddleware({
   // Normalize pathnames to avoid inconsistencies
   pathnames: {
     '/': '/',
-    '/universities': '/universities',
     '/programs': '/programs',
+    '/programs/:id': '/programs/[id]',
+    '/universities': '/universities',
+    '/universities/:id': '/universities/[id]',
+    '/scholarships': '/scholarships',
     '/about': '/about',
     '/contact': '/contact',
+    '/faq': '/faq',
+    '/blog': '/blog',
+    '/blog/:slug': '/blog/[slug]',
   }
 });
 

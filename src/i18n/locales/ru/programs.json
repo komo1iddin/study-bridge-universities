@@ -1,0 +1,49 @@
+{
+  "title": "Учебные программы в Китае",
+  "description": "Найдите и подайте заявку на лучшие программы в китайских университетах",
+  "searchPlaceholder": "Поиск программ или университетов...",
+  "searchButton": "Поиск",
+  
+  "filters": {
+    "degreeLevel": "Уровень образования",
+    "all": "Все",
+    "bachelor": "Бакалавр",
+    "master": "Магистр",
+    "phd": "PhD",
+    "scholarship": "Стипендия",
+    "available": "Доступна",
+    "notAvailable": "Не доступна",
+    "reset": "Сбросить фильтры"
+  },
+  
+  "popularFilters": "Популярные фильтры",
+  
+  "card": {
+    "duration": "Длительность",
+    "languageRequirements": "Требования к языку",
+    "ageRequirements": "Возрастные требования",
+    "availableSeats": "Доступные места",
+    "annualTuition": "Годовая плата",
+    "ranking": "Рейтинг университета",
+    "scholarshipAvailable": "Стипендия доступна",
+    "noScholarship": "Без стипендии",
+    "detailsButton": "Подробнее"
+  },
+  
+  "detail": {
+    "backToPrograms": "Назад к программам",
+    "overview": "Обзор программы",
+    "admissionRequirements": "Требования для поступления",
+    "curriculum": "Учебный план",
+    "careerProspects": "Карьерные перспективы",
+    "applicationDeadline": "Срок подачи заявки",
+    "startDate": "Дата начала",
+    "contactInformation": "Контактная информация",
+    "email": "Email",
+    "phone": "Телефон",
+    "website": "Веб-сайт",
+    "applyNow": "Подать заявку"
+  },
+  
+  "noResults": "Не найдено программ, соответствующих вашим критериям."
+} 

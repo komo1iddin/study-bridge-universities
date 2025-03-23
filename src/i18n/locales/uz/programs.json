@@ -1,0 +1,49 @@
+{
+  "title": "Xitoyda o'qish dasturlari",
+  "description": "Xitoy universitetlaridagi eng yaxshi dasturlarni toping va ularga ariza topshiring",
+  "searchPlaceholder": "Dasturlar yoki universitetlarni qidirish...",
+  "searchButton": "Qidirish",
+  
+  "filters": {
+    "degreeLevel": "Ta'lim darajasi",
+    "all": "Hammasi",
+    "bachelor": "Bakalavr",
+    "master": "Magistr",
+    "phd": "PhD",
+    "scholarship": "Stipendiya",
+    "available": "Mavjud",
+    "notAvailable": "Mavjud emas",
+    "reset": "Filtrlarni tiklash"
+  },
+  
+  "popularFilters": "Mashhur filtrlar",
+  
+  "card": {
+    "duration": "Davomiyligi",
+    "languageRequirements": "Til talablari",
+    "ageRequirements": "Yosh talablari",
+    "availableSeats": "Mavjud o'rinlar",
+    "annualTuition": "Yillik to'lov",
+    "ranking": "Universitet reytingi",
+    "scholarshipAvailable": "Stipendiya mavjud",
+    "noScholarship": "Stipendiya yo'q",
+    "detailsButton": "Batafsil ma'lumot"
+  },
+  
+  "detail": {
+    "backToPrograms": "Dasturlarga qaytish",
+    "overview": "Dastur haqida umumiy ma'lumot",
+    "admissionRequirements": "Qabul talablari",
+    "curriculum": "O'quv dasturi",
+    "careerProspects": "Karyera istiqbollari",
+    "applicationDeadline": "Ariza topshirish muddati",
+    "startDate": "Boshlanish sanasi",
+    "contactInformation": "Bog'lanish ma'lumotlari",
+    "email": "Email",
+    "phone": "Telefon",
+    "website": "Veb-sayt",
+    "applyNow": "Hozir ariza topshirish"
+  },
+  
+  "noResults": "Sizning mezonlaringizga mos dasturlar topilmadi."
+} 

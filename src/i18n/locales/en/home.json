@@ -1,34 +1,40 @@
 {
+  "title": "Study Bridge - Your Path to Education in China",
+  "description": "Study Bridge helps international students find and apply to universities in China.",
+  
   "hero": {
-    "title": "Find Your Perfect University in China",
-    "subtitle": "Explore top universities, programs, and scholarships to study in China. Get all the information you need in one place.",
-    "browseUniversities": "Browse Universities",
-    "explorePrograms": "Explore Programs"
+    "title": "Your Path to Quality Education in China",
+    "subtitle": "Find and apply to the best universities and programs with our streamlined platform",
+    "browsePrograms": "Browse Programs",
+    "exploreUniversities": "Explore Universities"
   },
-  "universities": {
-    "title": "Top Universities",
-    "subtitle": "Discover popular universities in China",
-    "viewAll": "View All"
-  },
+  
   "features": {
     "title": "Why Choose Study Bridge",
-    "comprehensiveInfo": {
-      "title": "Comprehensive Information",
-      "description": "Detailed profiles of universities, programs, and scholarships all in one place."
+    "find": {
+      "title": "Find the Right Program",
+      "description": "Search and compare hundreds of programs and universities across China to find your perfect match."
     },
-    "advancedSearch": {
-      "title": "Advanced Search",
-      "description": "Find the perfect university and program with our powerful filters."
+    "apply": {
+      "title": "Apply with Ease",
+      "description": "Streamlined application process to multiple universities with a single application profile."
     },
-    "applicationTracking": {
-      "title": "Application Tracking",
-      "description": "Track your applications and stay updated on their status."
+    "support": {
+      "title": "Dedicated Support",
+      "description": "Expert guidance from application to enrollment, including visa assistance and pre-departure preparation."
     }
   },
+  
+  "popularPrograms": {
+    "title": "Popular Programs",
+    "viewAll": "View all programs",
+    "viewDetails": "View Details"
+  },
+  
   "cta": {
-    "title": "Ready to Start Your Study Journey in China?",
-    "subtitle": "Create an account to save your favorite programs, track applications, and get personalized recommendations.",
-    "signUp": "Sign Up Now",
-    "browseUniversities": "Browse Universities"
+    "title": "Ready to Start Your Journey?",
+    "subtitle": "Take the first step towards a quality education in China by exploring our programs or contacting our team for personalized guidance.",
+    "browseButton": "Browse Programs",
+    "contactButton": "Contact Us"
   }
 } 
