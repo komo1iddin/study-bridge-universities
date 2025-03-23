@@ -17,9 +17,11 @@
     "home": "Главная",
     "universities": "Университеты",
     "programs": "Программы",
+    "programsDemo": "Демо программ",
     "scholarships": "Стипендии",
     "apply": "Подать заявку",
-    "contact": "Связаться с нами"
+    "contact": "Связаться с нами",
+    "about": "О нас"
   },
   "footer": {
     "about": "О нас",

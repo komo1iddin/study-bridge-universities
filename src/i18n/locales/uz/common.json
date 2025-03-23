@@ -17,9 +17,11 @@
     "home": "Bosh sahifa",
     "universities": "Universitetlar",
     "programs": "Dasturlar",
+    "programsDemo": "Dasturlar namunasi",
     "scholarships": "Stipendiyalar",
     "apply": "Ariza topshirish",
-    "contact": "Biz bilan bog'lanish"
+    "contact": "Biz bilan bog'lanish",
+    "about": "Biz haqimizda"
   },
   "footer": {
     "about": "Biz haqimizda",

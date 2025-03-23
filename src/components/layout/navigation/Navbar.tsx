@@ -5,6 +5,7 @@ import { usePathname } from '@/i18n/utils';
 import { Link } from '@/i18n/utils';
 import { useTranslations, useLocale } from 'next-intl';
 import LanguageSwitcher from './LanguageSwitcher';
+import NavigationLinks from '@/components/shared/constants/navigation';
 
 const Navbar = () => {
   const pathname = usePathname();
@@ -16,13 +17,18 @@ const Navbar = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
-  const navLinks = [
-    { href: '/', label: t('nav.home') },
-    { href: '/universities', label: t('nav.universities') },
-    { href: '/programs', label: t('nav.programs') },
-    { href: '/about', label: t('nav.about') },
-    { href: '/contact', label: t('nav.contact') },
-  ];
+  const navLinks = NavigationLinks.map(link => ({
+    href: link.path,
+    label: t(`navigation.${link.name}`)
+  }));
+
+  // Function to check if the link is active
+  const isActiveLink = (linkHref: string) => {
+    if (linkHref === '/') {
+      return pathname === `/${locale}` || pathname === `/${locale}/`;
+    }
+    return pathname.startsWith(`/${locale}${linkHref}`);
+  };
 
   return (
     <nav className="bg-white shadow-sm">
@@ -30,7 +36,7 @@ const Navbar = () => {
         <div className="flex justify-between items-center h-16">
           {/* Logo and brand */}
           <div className="flex-shrink-0">
-            <Link href="/" className="flex items-center">
+            <Link href={`/${locale}`} className="flex items-center">
               <span className="text-xl font-bold text-blue-600">Study Bridge</span>
             </Link>
           </div>
@@ -45,7 +51,7 @@ const Navbar = () => {
                     key={link.href}
                     href={href}
                     className={`px-3 py-2 rounded-md text-sm font-medium ${
-                      pathname === link.href
+                      isActiveLink(link.href)
                         ? 'bg-blue-50 text-blue-700'
                         : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
                     }`}
@@ -125,7 +131,7 @@ const Navbar = () => {
                   key={link.href}
                   href={href}
                   className={`block px-3 py-2 rounded-md text-base font-medium ${
-                    pathname === link.href
+                    isActiveLink(link.href)
                       ? 'bg-blue-50 text-blue-700'
                       : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
                   }`}
@@ -157,4 +163,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar; 
+export default Navbar;

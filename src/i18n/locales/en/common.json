@@ -22,10 +22,11 @@
     "home": "Home",
     "universities": "Universities",
     "programs": "Programs",
+    "programsDemo": "Programs Demo",
     "scholarships": "Scholarships",
     "apply": "Apply",
     "contact": "Contact Us",
-    "about": "About"
+    "about": "About Us"
   },
   "footer": {
     "about": "About Us",

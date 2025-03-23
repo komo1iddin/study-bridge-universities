@@ -6,7 +6,7 @@ import { notFound } from 'next/navigation';
 import { NextIntlClientProvider } from 'next-intl';
 import { getTranslations } from '@/i18n/utils';
 import { locales, Locale } from '@/i18n/config';
-import Navbar from '@/components/navigation/Navbar';
+import Navbar from '@/components/layout/navigation/Navbar';
 
 export const metadata: Metadata = {
   title: {

@@ -1,6 +1,6 @@
 import { getTranslations } from '@/i18n/utils';
 import { Metadata } from 'next';
-import ProgramDetailClient from '@/components/programs/ProgramDetailClient';
+import ProgramDetailClient from '@/components/features/programs/ProgramDetailClient';
 import { Locale } from '@/i18n/config';
 import { notFound } from 'next/navigation';
 
