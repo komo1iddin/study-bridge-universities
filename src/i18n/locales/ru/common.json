@@ -1,0 +1,46 @@
+{
+  "languageSwitcher": "Язык",
+  "nav": {
+    "home": "Главная",
+    "universities": "Университеты",
+    "programs": "Программы",
+    "about": "О нас",
+    "contact": "Контакты"
+  },
+  "auth": {
+    "login": "Войти",
+    "register": "Регистрация",
+    "logout": "Выйти",
+    "profile": "Профиль"
+  },
+  "navigation": {
+    "home": "Главная",
+    "universities": "Университеты",
+    "programs": "Программы",
+    "scholarships": "Стипендии",
+    "apply": "Подать заявку",
+    "contact": "Связаться с нами"
+  },
+  "footer": {
+    "about": "О нас",
+    "terms": "Условия использования",
+    "privacy": "Политика конфиденциальности",
+    "copyright": "© 2024 Study Bridge. Все права защищены."
+  },
+  "actions": {
+    "search": "Поиск",
+    "filter": "Фильтр",
+    "reset": "Сбросить",
+    "apply": "Применить",
+    "submit": "Отправить",
+    "cancel": "Отмена",
+    "save": "Сохранить",
+    "edit": "Редактировать",
+    "delete": "Удалить",
+    "viewDetails": "Подробнее",
+    "applyNow": "Подать заявку",
+    "downloadBrochure": "Скачать брошюру",
+    "contactUs": "Связаться с нами",
+    "readMore": "Читать далее"
+  }
+} 

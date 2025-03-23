@@ -1,0 +1,34 @@
+{
+  "hero": {
+    "title": "Xitoyda o'zingiz uchun ideal universitetni toping",
+    "subtitle": "Xitoyda ta'lim olish uchun eng yaxshi universitetlar, dasturlar va stipendiyalarni o'rganing. Barcha kerakli ma'lumotlarni bir joyda oling.",
+    "browseUniversities": "Universitetlarni ko'rish",
+    "explorePrograms": "Dasturlarni o'rganish"
+  },
+  "universities": {
+    "title": "Top universitetlar",
+    "subtitle": "Xitoydagi mashhur universitetlarni kashf eting",
+    "viewAll": "Barchasini ko'rish"
+  },
+  "features": {
+    "title": "Nima uchun Study Bridge'ni tanlash kerak",
+    "comprehensiveInfo": {
+      "title": "Keng qamrovli ma'lumot",
+      "description": "Universitetlar, dasturlar va stipendiyalar haqida batafsil ma'lumotlar bir joyda."
+    },
+    "advancedSearch": {
+      "title": "Kengaytirilgan qidiruv",
+      "description": "Bizning kuchli filtrlarimiz yordamida ideal universitet va dasturni toping."
+    },
+    "applicationTracking": {
+      "title": "Arizalarni kuzatish",
+      "description": "Arizalaringizni kuzatib boring va ularning holati haqida yangilanishlarni oling."
+    }
+  },
+  "cta": {
+    "title": "Xitoyda o'qish yo'lingizni boshlashga tayyormisiz?",
+    "subtitle": "Sevimli dasturlaringizni saqlash, arizalaringizni kuzatish va shaxsiylashtirilgan tavsiyalar olish uchun hisob yarating.",
+    "signUp": "Hozir ro'yxatdan o'ting",
+    "browseUniversities": "Universitetlarni ko'rish"
+  }
+} 

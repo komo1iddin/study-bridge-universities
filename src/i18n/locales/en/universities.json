@@ -1,0 +1,51 @@
+{
+  "page": {
+    "title": "Universities",
+    "subtitle": "Browse top universities in China for international students"
+  },
+  "filters": {
+    "title": "Filter Universities",
+    "province": "Province",
+    "city": "City",
+    "ranking": "Ranking",
+    "type": "Type",
+    "hasEnglishPrograms": "Has English Programs",
+    "tuition": "Tuition",
+    "hasDormitory": "Has Dormitory",
+    "specialization": "Specialization",
+    "reset": "Reset",
+    "apply": "Apply Filters"
+  },
+  "emptyState": {
+    "title": "No universities found",
+    "subtitle": "Try adjusting your search filters"
+  },
+  "details": {
+    "about": "About",
+    "facilities": "Facilities",
+    "tuitionAndCosts": "Tuition & Costs",
+    "programs": "Available Programs",
+    "campusGallery": "Campus Gallery",
+    "contactInfo": "Contact Information",
+    "dormitories": "On-campus Dormitories",
+    "library": "Library",
+    "sportsFacilities": "Sports Facilities",
+    "cafeterias": "Cafeterias",
+    "annualTuition": "Annual Tuition",
+    "livingExpenses": "Living Expenses",
+    "livingExpensesNote": "Includes accommodation, food, transport, and other daily necessities",
+    "noPrograms": {
+      "title": "No programs available",
+      "description1": "We couldn't find any programs for this university at the moment.",
+      "description2": "Check back later or contact the university directly."
+    },
+    "address": "Address",
+    "email": "Email",
+    "phone": "Phone",
+    "website": "Website",
+    "notAvailable": "Not available",
+    "visitWebsite": "Visit Website",
+    "applyNow": "Apply Now",
+    "rank": "Ranking"
+  }
+} 

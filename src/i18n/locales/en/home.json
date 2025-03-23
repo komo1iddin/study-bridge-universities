@@ -1,0 +1,34 @@
+{
+  "hero": {
+    "title": "Find Your Perfect University in China",
+    "subtitle": "Explore top universities, programs, and scholarships to study in China. Get all the information you need in one place.",
+    "browseUniversities": "Browse Universities",
+    "explorePrograms": "Explore Programs"
+  },
+  "universities": {
+    "title": "Top Universities",
+    "subtitle": "Discover popular universities in China",
+    "viewAll": "View All"
+  },
+  "features": {
+    "title": "Why Choose Study Bridge",
+    "comprehensiveInfo": {
+      "title": "Comprehensive Information",
+      "description": "Detailed profiles of universities, programs, and scholarships all in one place."
+    },
+    "advancedSearch": {
+      "title": "Advanced Search",
+      "description": "Find the perfect university and program with our powerful filters."
+    },
+    "applicationTracking": {
+      "title": "Application Tracking",
+      "description": "Track your applications and stay updated on their status."
+    }
+  },
+  "cta": {
+    "title": "Ready to Start Your Study Journey in China?",
+    "subtitle": "Create an account to save your favorite programs, track applications, and get personalized recommendations.",
+    "signUp": "Sign Up Now",
+    "browseUniversities": "Browse Universities"
+  }
+} 

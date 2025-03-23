@@ -1,0 +1,79 @@
+{
+  "page": {
+    "title": "Study Programs in China",
+    "subtitle": "Find the perfect program that matches your academic goals and career aspirations"
+  },
+  "filters": {
+    "title": "Filter Programs",
+    "educationLevel": "Education Level",
+    "language": "Language",
+    "fieldOfStudy": "Field of Study",
+    "duration": "Duration",
+    "tuition": "Tuition",
+    "format": "Format",
+    "startDate": "Start Date",
+    "levels": {
+      "all": "All Levels",
+      "language": "Language Programs",
+      "bachelor": "Bachelor's Degree",
+      "master": "Master's Degree",
+      "doctorate": "Doctorate"
+    },
+    "languages": {
+      "all": "All Languages",
+      "english": "English",
+      "chinese": "Chinese",
+      "mixed": "Mixed"
+    },
+    "fields": {
+      "all": "All Fields",
+      "engineering": "Engineering",
+      "business": "Business",
+      "medicine": "Medicine",
+      "computerScience": "Computer Science",
+      "arts": "Arts & Humanities"
+    },
+    "formats": {
+      "all": "All Formats",
+      "fulltime": "Full-time",
+      "online": "Online",
+      "mixed": "Mixed"
+    },
+    "reset": "Reset",
+    "apply": "Apply Filters"
+  },
+  "programCard": {
+    "language": "Language",
+    "duration": "Duration",
+    "format": "Format",
+    "tuition": "Tuition",
+    "year": "year",
+    "years": "years",
+    "perYear": "per year",
+    "viewDetails": "View Details",
+    "notSpecified": "Not specified"
+  },
+  "details": {
+    "aboutProgram": "About This Program",
+    "curriculum": "Curriculum",
+    "careerProspects": "Career Prospects",
+    "requirements": "Application Requirements",
+    "startDates": "Start Dates",
+    "scholarships": "Available Scholarships",
+    "academicRecord": "Academic Record",
+    "languageRequirements": "Language Requirements",
+    "requiredDocuments": "Required Documents",
+    "duration": "Duration",
+    "language": "Language",
+    "tuitionFee": "Tuition Fee",
+    "applyNow": "Apply Now",
+    "downloadBrochure": "Download Brochure",
+    "noScholarships": {
+      "title": "No scholarships available",
+      "description": "We couldn't find any scholarships for this program at the moment.",
+      "browseAll": "Browse All Scholarships"
+    },
+    "curriculumNotAvailable": "Detailed curriculum information is not available. Please contact the university for more details.",
+    "noDateInfo": "Start date information is not available. Please contact the university for details."
+  }
+} 

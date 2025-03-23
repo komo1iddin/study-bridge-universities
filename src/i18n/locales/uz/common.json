@@ -1,0 +1,46 @@
+{
+  "languageSwitcher": "Til",
+  "nav": {
+    "home": "Bosh sahifa",
+    "universities": "Universitetlar",
+    "programs": "Dasturlar",
+    "about": "Biz haqimizda",
+    "contact": "Bog'lanish"
+  },
+  "auth": {
+    "login": "Kirish",
+    "register": "Ro'yxatdan o'tish",
+    "logout": "Chiqish",
+    "profile": "Profil"
+  },
+  "navigation": {
+    "home": "Bosh sahifa",
+    "universities": "Universitetlar",
+    "programs": "Dasturlar",
+    "scholarships": "Stipendiyalar",
+    "apply": "Ariza topshirish",
+    "contact": "Biz bilan bog'lanish"
+  },
+  "footer": {
+    "about": "Biz haqimizda",
+    "terms": "Foydalanish shartlari",
+    "privacy": "Maxfiylik siyosati",
+    "copyright": "© 2024 Study Bridge. Barcha huquqlar himoyalangan."
+  },
+  "actions": {
+    "search": "Qidirish",
+    "filter": "Filtrlash",
+    "reset": "Qayta o'rnatish",
+    "apply": "Qo'llash",
+    "submit": "Yuborish",
+    "cancel": "Bekor qilish",
+    "save": "Saqlash",
+    "edit": "Tahrirlash",
+    "delete": "O'chirish",
+    "viewDetails": "Batafsil ma'lumot",
+    "applyNow": "Hozir ariza topshirish",
+    "downloadBrochure": "Broshyurani yuklab olish",
+    "contactUs": "Biz bilan bog'lanish",
+    "readMore": "Ko'proq o'qish"
+  }
+} 
