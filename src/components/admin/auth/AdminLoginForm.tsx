@@ -420,15 +420,18 @@ export default function AdminLoginForm({ localeOverride }: AdminLoginFormProps =
     const origin = window.location.origin;
     const fullPath = `${origin}/${locale}/admin`;
     
+    // Use a valid UUID for admin
+    const adminUserId = '00000000-0000-4000-a000-000000000000';
+    
     // Store critical session information in multiple places for redundancy
     try {
       // Store admin flags in both localStorage and sessionStorage
       localStorage.setItem('admin-auth-active', 'true');
-      localStorage.setItem('admin-user-id', data.user?.id || 'admin-user');
+      localStorage.setItem('admin-user-id', adminUserId);
       localStorage.setItem('admin-user-email', email);
       
       sessionStorage.setItem('admin-auth-active', 'true');
-      sessionStorage.setItem('admin-user-id', data.user?.id || 'admin-user');
+      sessionStorage.setItem('admin-user-id', adminUserId);
       sessionStorage.setItem('admin-user-email', email);
       
       // Set debug flags
@@ -438,7 +441,7 @@ export default function AdminLoginForm({ localeOverride }: AdminLoginFormProps =
       // Set special admin cookies directly from client as well for redundancy
       document.cookie = `admin-auth-token=${email};path=/;max-age=${60*60*24*7}`;
       document.cookie = `admin-user-email=${email};path=/;max-age=${60*60*24*7}`;
-      document.cookie = `admin-user-id=${data.user?.id || 'admin-user'};path=/;max-age=${60*60*24*7}`;
+      document.cookie = `admin-user-id=${adminUserId};path=/;max-age=${60*60*24*7}`;
       document.cookie = `admin-auth-timestamp=${Date.now()};path=/;max-age=${60*60*24*7}`;
       
       console.log('[AdminLogin] Successfully stored admin authentication flags in multiple locations');
@@ -455,7 +458,7 @@ export default function AdminLoginForm({ localeOverride }: AdminLoginFormProps =
         expires_in: 86400,
         refresh_token: `mock_refresh_${Date.now()}`,
         user: {
-          id: data.user?.id || 'admin-user',
+          id: adminUserId,
           email: email,
           user_metadata: { role: 'admin', is_admin: true },
           app_metadata: {},

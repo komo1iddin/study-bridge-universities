@@ -236,12 +236,12 @@ export function AuthProvider({ children }: AuthProviderProps) {
           try {
             const adminEmail = 'my.main@example.com';
             
-            // Get admin user ID from storage if available
-            const possibleUserId = localStorage.getItem('admin-user-id') || sessionStorage.getItem('admin-user-id') || 'admin-user';
+            // Use a valid UUID for admin user - this is a static UUID for the special admin
+            const adminUserId = '00000000-0000-4000-a000-000000000000';
             
             // Create a minimal user object that will allow admin UI to render
             const tempAdminUser = {
-              id: possibleUserId,
+              id: adminUserId,
               email: adminEmail,
               user_metadata: { role: 'admin', is_admin: true },
               app_metadata: {},
@@ -257,7 +257,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
             
             // Create a minimal profile to match
             const tempAdminProfile = {
-              id: possibleUserId,
+              id: adminUserId,
               email: adminEmail,
               role: 'admin',
               created_at: new Date().toISOString(),
@@ -350,7 +350,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
           } else if (hasAdminAccess) {
             // Handle admin special case
             const adminEmail = 'my.main@example.com';
-            const adminId = 'admin-user-id';
+            // Use a valid UUID format for the admin user
+            const adminId = '00000000-0000-4000-a000-000000000000';
             
             // Create a temporary admin user
             const tempAdminUser = {

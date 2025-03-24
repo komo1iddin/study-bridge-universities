@@ -23,7 +23,8 @@ export async function POST(req: NextRequest) {
     // This is only for development and debugging - would be removed in production
     const isDebugMode = process.env.NODE_ENV !== 'production';
     let authSuccess = false;
-    let userId = 'admin-user';
+    // Use a valid UUID format for consistency
+    let userId = '00000000-0000-4000-a000-000000000000';
     
     if (isDebugMode && password === 'admin123') {
       console.log('[API] Debug mode: Allowing special admin login with debug password');

@@ -244,6 +244,13 @@ export async function middleware(request: NextRequest) {
         httpOnly: false
       });
       
+      // Store a valid UUID for the admin user ID
+      response.cookies.set('admin-user-id', '00000000-0000-4000-a000-000000000000', {
+        path: '/',
+        maxAge: 60 * 60 * 24 * 7, // 1 week
+        httpOnly: false
+      });
+      
       response.cookies.set('admin-auth-timestamp', Date.now().toString(), {
         path: '/',
         maxAge: 60 * 60 * 24 * 7, // 1 week
