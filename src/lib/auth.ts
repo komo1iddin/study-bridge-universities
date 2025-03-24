@@ -66,9 +66,22 @@ export async function signIn(email: string, password: string) {
   try {
     console.log('Signing in user with email:', email);
     
+    // Test if browser has localStorage available
+    try {
+      if (typeof window !== 'undefined') {
+        const testKey = '_supabase_auth_test';
+        localStorage.setItem(testKey, 'test');
+        localStorage.removeItem(testKey);
+        console.log('localStorage is available for auth persistence');
+      }
+    } catch (storageErr) {
+      console.warn('localStorage may not be available:', storageErr);
+    }
+    
+    // Sign in without unsupported options
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
-      password,
+      password
     });
 
     if (error) {
@@ -77,6 +90,19 @@ export async function signIn(email: string, password: string) {
     }
 
     console.log('Sign-in successful. User ID:', data.user?.id);
+    
+    // DEBUGGING: Force session persistence if needed
+    try {
+      console.log('Ensuring session persistence...');
+      const { error: persistError } = await supabase.auth.refreshSession();
+      if (persistError) {
+        console.warn('Session refresh after login had error:', persistError.message);
+      } else {
+        console.log('Session refreshed successfully after login');
+      }
+    } catch (refreshErr) {
+      console.error('Error refreshing session after login:', refreshErr);
+    }
     
     // Verify session was established
     const { data: sessionData } = await supabase.auth.getSession();

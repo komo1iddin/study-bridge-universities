@@ -51,8 +51,13 @@ export const redirectWithLocale = (
   // Delay the redirect to allow for toasts and state updates
   setTimeout(() => {
     console.log('Executing redirect now...');
+    
+    // DEBUGGING: Add a special hash to track redirects
+    const urlWithDebugInfo = `${fullRedirectUrl}#auth_redirect_${Date.now()}`;
+    console.log('Using URL with debug info:', urlWithDebugInfo);
+    
     // Force a hard navigation to ensure session is picked up by the server
-    window.location.href = fullRedirectUrl;
+    window.location.href = urlWithDebugInfo;
   }, delay);
 };
 

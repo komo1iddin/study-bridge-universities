@@ -1,9 +1,9 @@
 import { Metadata } from 'next';
 import { getTranslations } from '@/i18n/utils';
 import ProfileClient from '@/components/auth/ProfileClient';
-import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
+import { createServerSupabaseClient } from '@/lib/server-supabase';
 
 export const metadata: Metadata = {
   title: 'My Profile | Study Bridge',
@@ -19,29 +19,16 @@ export default async function ProfilePage({
   const resolvedParams = await Promise.resolve(params);
   const locale = resolvedParams.locale;
   
-  // Create a Supabase client for server-side rendering
-  const cookieStore = await cookies();
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        get(name: string) {
-          return cookieStore.get(name)?.value;
-        },
-        set(name: string, value: string, options: any) {
-          // This is a server component, we can't set cookies here
-        },
-        remove(name: string, options: any) {
-          // This is a server component, we can't remove cookies here
-        },
-      },
-    }
-  );
+  // Use our enhanced server client
+  const supabase = createServerSupabaseClient();
   
   // Check if the user is authenticated
   console.log('Checking authentication on profile page...');
-  const { data: { session } } = await supabase.auth.getSession();
+  const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+  
+  if (sessionError) {
+    console.error('Error checking session:', sessionError);
+  }
   
   console.log('Session check result:', session ? 'User authenticated' : 'No session found');
   

@@ -48,16 +48,39 @@ export default function LoginForm() {
         const redirectPath = searchParams.get('redirect') || `/profile`;
         console.log('Will redirect to:', redirectPath);
         
+        // DEBUGGING: Log all cookies to see what's available
+        console.log('Document cookies:', document.cookie);
+        
         // Verify the session is established before redirecting
         try {
           const { data } = await supabase.auth.getSession();
           console.log('Session verified before redirect:', data.session ? 'Valid' : 'Invalid');
+          if (data.session) {
+            console.log('Session details:', {
+              userId: data.session.user.id,
+              expiresAt: data.session.expires_at,
+              hasAuthToken: !!data.session.access_token,
+              hasRefreshToken: !!data.session.refresh_token
+            });
+          }
         } catch (sessionErr) {
           console.error('Error checking session:', sessionErr);
         }
         
-        // Use our utility function for redirecting with locale
-        redirectWithLocale(locale, redirectPath);
+        // DEBUGGING: Wait longer before redirecting to ensure session is stored
+        setTimeout(async () => {
+          console.log('After delay, checking session again...');
+          try {
+            const { data: latestData } = await supabase.auth.getSession();
+            console.log('Latest session check before redirect:', latestData.session ? 'Valid' : 'Invalid');
+            // Use our utility function for redirecting with locale
+            redirectWithLocale(locale, redirectPath);
+          } catch (err) {
+            console.error('Error in delayed session check:', err);
+            // Redirect anyway
+            redirectWithLocale(locale, redirectPath);
+          }
+        }, 1500); // Wait 1.5 seconds
       }
     } catch (err) {
       console.error('Unexpected error during login:', err);
