@@ -47,6 +47,8 @@ export async function middleware(req: NextRequest) {
   }
   
   // Create a Supabase client
+  // Note: In middleware, we can't use the async cookies() API
+  // so we use the request cookies directly
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,

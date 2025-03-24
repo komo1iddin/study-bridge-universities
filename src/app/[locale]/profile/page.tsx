@@ -20,7 +20,7 @@ export default async function ProfilePage({
   const locale = resolvedParams.locale;
   
   // Use our enhanced server client
-  const supabase = createServerSupabaseClient();
+  const supabase = await createServerSupabaseClient();
   
   // Check if the user is authenticated
   console.log('Checking authentication on profile page...');
