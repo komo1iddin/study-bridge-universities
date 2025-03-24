@@ -130,7 +130,7 @@ export const ProgramCard: FC<ProgramCardProps> = ({
   }
   
   return (
-    <div className="border border-gray-200 rounded-lg overflow-hidden bg-white">
+    <div className="bg-white overflow-hidden">
       {/* University header */}
       <div className="p-4 border-b border-gray-200">
         <div className="flex justify-between items-center">

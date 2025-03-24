@@ -25,7 +25,7 @@ export default function AdminHeader({ title, breadcrumbs = [], actions }: AdminH
   };
 
   return (
-    <header className="bg-gradient-to-r from-white to-blue-50 border-b border-gray-200 shadow-sm">
+    <header className="bg-gradient-to-r from-white to-blue-50 border-b border-gray-200 shadow-sm mx-6 rounded-lg">
       <div className="px-6 py-4 mx-auto">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>

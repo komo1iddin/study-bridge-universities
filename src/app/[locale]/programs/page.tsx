@@ -2,8 +2,7 @@ import { getPrograms, getUniversities } from '@/lib/db';
 import { getTranslations } from '@/i18n/utils';
 import { Metadata } from 'next';
 import { Locale } from '@/i18n/config';
-import { ProgramCard } from '@/components/cards/ProgramCard';
-import { University } from '@/types/database.types';
+import ProgramsFilteredGrid from '@/components/features/programs/ProgramsFilteredGrid';
 
 interface PageParams {
   params: Promise<{
@@ -24,7 +23,7 @@ export async function generateMetadata({
   };
 }
 
-export default async function ProgramsDemoPage({
+export default async function ProgramsPage({
   params
 }: PageParams) {
   const { locale } = await params;
@@ -57,25 +56,45 @@ export default async function ProgramsDemoPage({
     tuition: translations.programs?.card?.annualTuition || 'Tuition',
     perYear: locale === 'ru' ? '/год' : locale === 'uz' ? '/yil' : '/year',
     otherPrograms: locale === 'ru' ? 'Другие программы' : locale === 'uz' ? 'Boshqa dasturlar' : 'Other Programs',
-    moreDetails: translations.programs?.card?.detailsButton || 'More Details'
+    moreDetails: translations.programs?.card?.detailsButton || 'More Details',
+    filterTitle: translations.programs?.filters?.title || 'Filters',
+    searchPlaceholder: translations.programs?.filters?.searchPlaceholder || 'Search programs...',
+    degreeLevel: translations.programs?.filters?.degreeLevel || 'Degree Level',
+    language: translations.programs?.filters?.language || 'Language',
+    format: translations.programs?.filters?.format || 'Format',
+    duration: translations.programs?.filters?.duration || 'Duration',
+    scholarshipAvailable: translations.programs?.filters?.scholarshipAvailable || 'Scholarship Available',
+    applyFilters: translations.programs?.filters?.applyButton || 'Apply Filters',
+    resetFilters: translations.programs?.filters?.resetButton || 'Reset',
+    popularFilters: translations.programs?.filters?.popularFilters || 'Popular Filters',
+    noResults: translations.programs?.filters?.noResults || 'No programs found matching your criteria'
   };
   
+  // Define popular keywords
+  const popularFilters = [
+    locale === 'ru' ? 'Компьютерные науки' : locale === 'uz' ? 'Kompyuter ilmlari' : 'Computer Science',
+    locale === 'ru' ? 'Бизнес' : locale === 'uz' ? 'Biznes' : 'Business',
+    locale === 'ru' ? 'Английский язык' : locale === 'uz' ? 'Ingliz tili' : 'English Language',
+    locale === 'ru' ? 'Инженерия' : locale === 'uz' ? 'Muhandislik' : 'Engineering',
+    locale === 'ru' ? 'Стипендия' : locale === 'uz' ? 'Stipendiya' : 'Scholarship',
+    locale === 'ru' ? 'Медицина' : locale === 'uz' ? 'Tibbiyot' : 'Medicine'
+  ];
+  
   return (
-    <div className="container mx-auto px-4 py-12">
-      <h1 className="text-3xl font-bold mb-6">
-        {translations.programs?.title || 'Programs Demo'}
-      </h1>
-      
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {programs.map((program) => (
-          <ProgramCard
-            key={program.id}
-            program={program}
-            universityName={universityMap[program.university_id] || `University ${program.university_id}`}
-            locale={locale}
-            translations={cardTranslations}
-          />
-        ))}
+    <div className="bg-gray-50 min-h-screen">
+      <div className="container mx-auto px-4 py-12">
+        <h1 className="text-3xl font-bold mb-6">
+          {translations.programs?.title || 'Study Programs'}
+        </h1>
+        
+        {/* Client component with filtering capabilities */}
+        <ProgramsFilteredGrid 
+          programs={programs}
+          universityMap={universityMap}
+          locale={locale}
+          translations={cardTranslations}
+          popularFilters={popularFilters}
+        />
       </div>
     </div>
   );
