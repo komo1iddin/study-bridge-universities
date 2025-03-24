@@ -34,12 +34,40 @@ export async function createServerSupabaseClient() {
           return cookie?.value;
         },
         set(name: string, value: string, options: any) {
-          console.log(`[Server] Setting cookie: ${name} (in server component - may not work)`);
-          // This may not work in all server components, especially in RSC
+          try {
+            // In server-side context, we can only set cookies via the Response
+            // but we can log for debugging purposes
+            console.log(`[Server] Setting cookie: ${name} (value length: ${value?.length || 0})`);
+            
+            // Try to persist this for future requests by setting it in the cookie store
+            cookieStore.set({
+              name,
+              value,
+              ...options,
+              // Extend cookie lifetime to help with session persistence
+              // Only do this for auth tokens
+              ...(name.includes('auth') ? {
+                maxAge: 60 * 60 * 24, // 24 hours
+                path: '/',
+                sameSite: 'lax',
+                secure: process.env.NODE_ENV === 'production',
+              } : {})
+            });
+          } catch (e) {
+            console.error(`[Server] Failed to set cookie ${name}:`, e);
+          }
         },
         remove(name: string, options: any) {
-          console.log(`[Server] Removing cookie: ${name} (in server component - may not work)`);
-          // This may not work in all server components, especially in RSC
+          try {
+            console.log(`[Server] Removing cookie: ${name}`);
+            cookieStore.delete({
+              name,
+              ...options,
+              path: '/'
+            });
+          } catch (e) {
+            console.error(`[Server] Failed to remove cookie ${name}:`, e);
+          }
         },
       },
     }

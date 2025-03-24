@@ -16,7 +16,7 @@ type ProfileClientProps = {
 export default function ProfileClient({ locale, initialProfile }: ProfileClientProps) {
   const router = useRouter();
   const t = useTranslations('common');
-  const { user } = useAuth();
+  const { user, refreshProfile } = useAuth();
   
   const [firstName, setFirstName] = useState(initialProfile?.first_name || '');
   const [lastName, setLastName] = useState(initialProfile?.last_name || '');
@@ -81,6 +81,12 @@ export default function ProfileClient({ locale, initialProfile }: ProfileClientP
       if (data) {
         console.log('[ProfileClient] Existing profile found:', data);
         setProfile(data);
+        // Update form fields with the latest data
+        setFirstName(data.first_name || '');
+        setLastName(data.last_name || '');
+        setEmail(data.email || '');
+        setPhone(data.phone || '');
+        setAddress(data.address || '');
       } else if (error) {
         console.warn('[ProfileClient] Error fetching profile:', error.message);
         
@@ -117,7 +123,17 @@ export default function ProfileClient({ locale, initialProfile }: ProfileClientP
         
         const createdProfile = await response.json();
         console.log('[ProfileClient] Successfully created profile:', createdProfile);
-        setProfile(createdProfile);
+        if (createdProfile.profile) {
+          setProfile(createdProfile.profile);
+          // Initialize form with created profile
+          setFirstName(createdProfile.profile.first_name || '');
+          setLastName(createdProfile.profile.last_name || '');
+          setEmail(createdProfile.profile.email || '');
+          setPhone(createdProfile.profile.phone || '');
+          setAddress(createdProfile.profile.address || '');
+        } else {
+          console.warn('[ProfileClient] Created profile is missing profile data:', createdProfile);
+        }
         setSuccessMessage('Profile created successfully');
       }
     } catch (e) {
@@ -135,24 +151,71 @@ export default function ProfileClient({ locale, initialProfile }: ProfileClientP
     setIsLoading(true);
 
     try {
-      const { profile, error } = await updateUserProfile({
-        first_name: firstName,
-        last_name: lastName,
-        phone,
-        address,
+      console.log('[ProfileClient] Updating profile with data:', { 
+        firstName, lastName, phone, address 
       });
       
-      if (error) {
-        setError(error.message);
-        return;
+      // First check session to make sure we're still authenticated
+      const { data: sessionData } = await supabase.auth.getSession();
+      if (!sessionData.session) {
+        throw new Error('Your session has expired. Please login again.');
       }
       
-      if (profile) {
+      // Try direct database update first (preferred)
+      const { data: directUpdateData, error: directUpdateError } = await supabase
+        .from('users')
+        .update({
+          first_name: firstName,
+          last_name: lastName,
+          phone,
+          address,
+        })
+        .eq('id', sessionData.session.user.id)
+        .select()
+        .single();
+        
+      if (directUpdateError) {
+        console.warn('[ProfileClient] Direct update failed:', directUpdateError.message);
+        console.log('[ProfileClient] Falling back to auth.ts update function');
+        
+        // Fallback to the helper function
+        const { profile, error } = await updateUserProfile({
+          first_name: firstName,
+          last_name: lastName,
+          phone,
+          address,
+        });
+        
+        if (error) {
+          console.error('[ProfileClient] Update via helper failed:', error.message);
+          throw new Error(error.message);
+        }
+        
+        if (profile) {
+          console.log('[ProfileClient] Profile updated successfully via helper:', profile);
+          setProfile(profile);
+          setSuccess('Profile updated successfully');
+          
+          // Refresh global profile state
+          await refreshProfile();
+        } else {
+          throw new Error('Profile update returned no data');
+        }
+      } else {
+        // Direct update succeeded
+        console.log('[ProfileClient] Profile updated successfully via direct update:', directUpdateData);
+        setProfile(directUpdateData);
         setSuccess('Profile updated successfully');
-        setTimeout(() => setSuccess(null), 3000);
-        setProfileMissing(false);
+        
+        // Refresh global profile state
+        await refreshProfile();
       }
+      
+      // Clear success message after a delay
+      setTimeout(() => setSuccess(null), 3000);
+      setProfileMissing(false);
     } catch (err) {
+      console.error('[ProfileClient] Profile update error:', err);
       setError((err as Error).message);
     } finally {
       setIsLoading(false);
@@ -182,6 +245,12 @@ export default function ProfileClient({ locale, initialProfile }: ProfileClientP
         <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4" role="alert">
           <strong className="font-bold">Error: </strong>
           <span className="block sm:inline">{error}</span>
+        </div>
+      )}
+      
+      {success && (
+        <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4" role="alert">
+          <span className="block sm:inline">{success}</span>
         </div>
       )}
       

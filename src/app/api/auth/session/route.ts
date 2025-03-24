@@ -28,12 +28,21 @@ export async function GET() {
           return cookie?.value;
         },
         set(name: string, value: string, options: any) {
-          console.log(`[Session API] Setting cookie: ${name}`);
+          console.log(`[Session API] Setting cookie: ${name} (length: ${value?.length || 0})`);
           try {
             cookieStore.set({
               name,
               value,
-              ...options
+              ...options,
+              // Always set path and ensure reasonable defaults for auth cookies
+              ...(name.includes('auth') ? {
+                maxAge: 60 * 60 * 24, // 24 hours
+                path: '/',
+                sameSite: 'lax',
+                secure: process.env.NODE_ENV === 'production',
+              } : {
+                path: '/',
+              })
             });
           } catch (error) {
             console.error(`[Session API] Failed to set cookie ${name}:`, error);
@@ -42,7 +51,11 @@ export async function GET() {
         remove(name: string, options: any) {
           console.log(`[Session API] Removing cookie: ${name}`);
           try {
-            cookieStore.delete(name);
+            cookieStore.delete({
+              name,
+              ...options,
+              path: '/' // Always ensure path is set
+            });
           } catch (error) {
             console.error(`[Session API] Failed to remove cookie ${name}:`, error);
           }
@@ -71,14 +84,33 @@ export async function GET() {
     // Set a debug cookie to help track session state
     response.cookies.set('sb-debug-session', 'true', { 
       maxAge: 60 * 60 * 24, // 1 day
-      path: '/'
+      path: '/',
+      sameSite: 'lax',
+      secure: process.env.NODE_ENV === 'production'
+    });
+    
+    // Also set a backup session cookie with the session ID
+    // This will help ensure the session is preserved even if other cookies are lost
+    response.cookies.set('sb-session-id', session.user.id, {
+      maxAge: 60 * 60 * 24, // 1 day
+      path: '/',
+      sameSite: 'lax',
+      secure: process.env.NODE_ENV === 'production'
     });
     
     return response;
   }
   
-  return NextResponse.json({ 
+  // Clear debug cookies if no session
+  const response = NextResponse.json({ 
     user: null,
     message: 'No active session'
   });
+  
+  response.cookies.set('sb-debug-session', '', { 
+    maxAge: 0,
+    path: '/'
+  });
+  
+  return response;
 } 

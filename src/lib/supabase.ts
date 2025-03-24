@@ -17,6 +17,7 @@ export const supabase = createClient(
   {
     auth: {
       persistSession: true,
+      autoRefreshToken: true,
       // Store session data in both cookies and localStorage for redundancy
       storageKey: 'supabase_auth_token',
       storage: {
@@ -25,7 +26,7 @@ export const supabase = createClient(
           if (typeof window !== 'undefined') {
             const value = localStorage.getItem(key);
             if (value) {
-              console.log(`[Supabase Storage] Got item from localStorage: ${key}`);
+              console.log(`[Supabase Storage] Got item from localStorage: ${key} (length: ${value.length})`);
               return value;
             }
           }
@@ -43,7 +44,7 @@ export const supabase = createClient(
           return null;
         },
         setItem: (key, value) => {
-          console.log(`[Supabase Storage] Setting item: ${key}`);
+          console.log(`[Supabase Storage] Setting item: ${key} (length: ${value?.length || 0})`);
           
           // Store in localStorage (client-side only)
           if (typeof window !== 'undefined') {
@@ -57,10 +58,14 @@ export const supabase = createClient(
           
           // Also store in cookies for redundancy
           if (typeof document !== 'undefined') {
-            // Set a cookie that expires in 12 hours (matching default session lifetime)
-            const expires = new Date(Date.now() + 12 * 60 * 60 * 1000).toUTCString();
-            document.cookie = `${key}=${value}; expires=${expires}; path=/; SameSite=Lax`;
-            console.log(`[Supabase Storage] Set item in cookies: ${key}`);
+            try {
+              // Set a cookie that expires in 24 hours (extending from 12 hours)
+              const expires = new Date(Date.now() + 24 * 60 * 60 * 1000).toUTCString();
+              document.cookie = `${key}=${value}; expires=${expires}; path=/; SameSite=Lax`;
+              console.log(`[Supabase Storage] Set item in cookies: ${key} (expires: ${expires})`);
+            } catch (e) {
+              console.warn(`[Supabase Storage] Failed to set cookie: ${e}`);
+            }
           }
         },
         removeItem: (key) => {
@@ -68,14 +73,22 @@ export const supabase = createClient(
           
           // Remove from localStorage
           if (typeof window !== 'undefined') {
-            localStorage.removeItem(key);
-            console.log(`[Supabase Storage] Removed item from localStorage: ${key}`);
+            try {
+              localStorage.removeItem(key);
+              console.log(`[Supabase Storage] Removed item from localStorage: ${key}`);
+            } catch (e) {
+              console.warn(`[Supabase Storage] Failed to remove from localStorage: ${e}`);
+            }
           }
           
           // Remove from cookies
           if (typeof document !== 'undefined') {
-            document.cookie = `${key}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; SameSite=Lax`;
-            console.log(`[Supabase Storage] Removed item from cookies: ${key}`);
+            try {
+              document.cookie = `${key}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; SameSite=Lax`;
+              console.log(`[Supabase Storage] Removed item from cookies: ${key}`);
+            } catch (e) {
+              console.warn(`[Supabase Storage] Failed to remove cookie: ${e}`);
+            }
           }
         },
       },

@@ -2,7 +2,7 @@ import { getTranslations } from '@/i18n/utils';
 import { Metadata } from 'next';
 import ProgramDetailClient from '@/components/features/programs/ProgramDetailClient';
 import { Locale } from '@/i18n/config';
-import { notFound } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 import { getProgramById, getUniversityById } from '@/lib/db';
 
 interface PageParams {
@@ -15,7 +15,20 @@ interface PageParams {
 export async function generateMetadata({ params }: PageParams): Promise<Metadata> {
   try {
     const { id } = await params;
-    const program = await getProgramById(id);
+    
+    // Check if the ID is the literal placeholder ":id" (which may be URL encoded as %3Aid)
+    if (id === ':id' || id === '%3Aid') {
+      return {
+        title: 'Invalid Program ID',
+        description: 'Please select a valid program from the programs page.'
+      };
+    }
+    
+    // Decode the URL-encoded ID
+    const decodedId = decodeURIComponent(id);
+    console.log(`Generating metadata for program ID: ${decodedId} (original: ${id})`);
+    
+    const program = await getProgramById(decodedId);
     
     if (!program) {
       return {
@@ -43,20 +56,31 @@ export default async function ProgramDetailPage({
   const { locale, id } = await params;
   
   try {
+    // Check if the ID is the literal placeholder ":id" (which may be URL encoded as %3Aid)
+    if (id === ':id' || id === '%3Aid') {
+      console.error('Invalid program ID: Literal placeholder ":id" was used instead of an actual ID');
+      redirect(`/${locale}/programs`);
+      return null;
+    }
+    
+    // Decode the URL-encoded ID
+    const decodedId = decodeURIComponent(id);
+    console.log(`Rendering program detail page for ID: ${decodedId} (original: ${id})`);
+    
     const translations = await getTranslations(locale, ['programs', 'common']);
     
     // Safely fetch program data with error handling
     let dbProgram;
     try {
-      dbProgram = await getProgramById(id);
-      console.log(`Fetched program ${id}:`, dbProgram ? 'Found' : 'Not found');
+      dbProgram = await getProgramById(decodedId);
+      console.log(`Fetched program ${decodedId}:`, dbProgram ? 'Found' : 'Not found');
     } catch (error) {
-      console.error(`Error fetching program ${id}:`, error);
+      console.error(`Error fetching program ${decodedId}:`, error);
       notFound();
     }
     
     if (!dbProgram) {
-      console.error(`Program ${id} not found`);
+      console.error(`Program ${decodedId} not found`);
       notFound();
     }
 
@@ -68,7 +92,7 @@ export default async function ProgramDetailPage({
       university = await getUniversityById(dbProgram.university_id);
       universityName = university?.name || `University ${dbProgram.university_id}`;
     } catch (error) {
-      console.error(`Error fetching university for program ${id}:`, error);
+      console.error(`Error fetching university for program ${decodedId}:`, error);
       universityName = dbProgram.universities?.name || `University ${dbProgram.university_id}`;
     }
 
