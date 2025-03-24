@@ -6,6 +6,7 @@ import { signIn } from '@/lib/auth';
 import { useLocale, useTranslations } from 'next-intl';
 import { useToast } from '@/contexts/ToastContext';
 import { redirectWithLocale } from '@/lib/session-utils';
+import { supabase } from '@/lib/supabase';
 
 export default function LoginForm() {
   const searchParams = useSearchParams();
@@ -45,6 +46,15 @@ export default function LoginForm() {
         
         // Get the redirect URL from search params, or default to profile
         const redirectPath = searchParams.get('redirect') || `/profile`;
+        console.log('Will redirect to:', redirectPath);
+        
+        // Verify the session is established before redirecting
+        try {
+          const { data } = await supabase.auth.getSession();
+          console.log('Session verified before redirect:', data.session ? 'Valid' : 'Invalid');
+        } catch (sessionErr) {
+          console.error('Error checking session:', sessionErr);
+        }
         
         // Use our utility function for redirecting with locale
         redirectWithLocale(locale, redirectPath);

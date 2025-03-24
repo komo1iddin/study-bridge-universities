@@ -37,7 +37,7 @@ export const getAuthenticatedUser = async (): Promise<User | null> => {
 export const redirectWithLocale = (
   locale: string, 
   redirectPath: string = '/',
-  delay: number = 2000
+  delay: number = 500
 ): void => {
   // Ensure redirect path starts with a slash
   if (!redirectPath.startsWith('/')) {
@@ -51,6 +51,7 @@ export const redirectWithLocale = (
   // Delay the redirect to allow for toasts and state updates
   setTimeout(() => {
     console.log('Executing redirect now...');
+    // Force a hard navigation to ensure session is picked up by the server
     window.location.href = fullRedirectUrl;
   }, delay);
 };

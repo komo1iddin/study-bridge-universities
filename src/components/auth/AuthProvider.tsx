@@ -211,7 +211,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         console.log('Checking initial auth session...');
         const { data } = await supabase.auth.getSession();
         const sessionUser = data.session?.user || null;
-        console.log('Initial session check:', sessionUser ? 'User authenticated' : 'No user session');
+        console.log('Initial session check:', sessionUser ? `User authenticated: ${sessionUser.id}` : 'No user session');
         setUser(sessionUser);
       } catch (err) {
         console.error('Error checking auth session:', err);
@@ -226,14 +226,25 @@ export function AuthProvider({ children }: AuthProviderProps) {
     // Set up auth state change listener
     const { data: authListener } = supabase.auth.onAuthStateChange(
       async (event, session) => {
-        console.log('Auth state change event:', event);
+        console.log('Auth state change event:', event, 'Session:', session ? 'Present' : 'None');
         
         if (session?.user) {
-          console.log('User present in session after', event, 'event');
+          console.log('User present in session after', event, 'event. User ID:', session.user.id);
           setUser(session.user);
+          
+          // For sign-in events, explicitly check and create the profile if needed
+          if (event === 'SIGNED_IN') {
+            console.log('Signed in event detected, ensuring profile exists...');
+            const { profile: userProfile } = await getUserProfile();
+            if (userProfile) {
+              console.log('Profile loaded after sign-in:', userProfile.id);
+              setProfile(userProfile);
+            }
+          }
         } else {
           console.log('No user in session after', event, 'event');
           setUser(null);
+          setProfile(null);
         }
         
         if (event === 'SIGNED_IN' || event === 'USER_UPDATED') {

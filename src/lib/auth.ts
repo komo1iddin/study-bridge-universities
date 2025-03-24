@@ -77,6 +77,42 @@ export async function signIn(email: string, password: string) {
     }
 
     console.log('Sign-in successful. User ID:', data.user?.id);
+    
+    // Verify session was established
+    const { data: sessionData } = await supabase.auth.getSession();
+    console.log('Session after sign-in:', sessionData.session ? 'Active' : 'Not found');
+    
+    // Ensure user profile exists
+    try {
+      const { error: profileError } = await getUserProfile();
+      if (profileError) {
+        console.log('User profile check after login:', profileError.message);
+        
+        // Try to create profile if needed
+        const response = await fetch('/api/auth/create-profile', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            userId: data.user.id,
+            userData: {
+              email: data.user.email,
+              role: (data.user.user_metadata?.role as string) || 'client',
+            },
+          }),
+        });
+        
+        if (response.ok) {
+          console.log('Profile created after sign-in');
+        }
+      } else {
+        console.log('User profile verified after sign-in');
+      }
+    } catch (profileErr) {
+      console.error('Error checking user profile after sign-in:', profileErr);
+    }
+    
     return { user: data.user };
   } catch (error) {
     console.error('Unexpected error during sign-in:', error);

@@ -40,12 +40,18 @@ export default async function ProfilePage({
   );
   
   // Check if the user is authenticated
+  console.log('Checking authentication on profile page...');
   const { data: { session } } = await supabase.auth.getSession();
+  
+  console.log('Session check result:', session ? 'User authenticated' : 'No session found');
   
   if (!session) {
     // If not authenticated, redirect to login page
-    redirect(`/${locale}/auth/login`);
+    console.log('Redirecting to login page due to no session');
+    redirect(`/${locale}/auth/login?redirect=/profile`);
   }
+  
+  console.log('User authenticated, proceeding to load profile data');
   
   // Get user profile data - might not exist due to RLS issues during signup
   let profile = null;
@@ -58,6 +64,7 @@ export default async function ProfilePage({
     
     if (!error) {
       profile = data;
+      console.log('Profile loaded successfully');
     } else {
       console.warn('Could not load profile, will create in client component:', error.message);
     }
