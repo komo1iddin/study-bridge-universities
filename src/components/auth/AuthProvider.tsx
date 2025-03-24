@@ -84,8 +84,21 @@ export function AuthProvider({ children }: AuthProviderProps) {
           console.log('Falling back to API method...');
         }
         
-        // Fallback to the API method
+        // First check if the profile exists before trying to create it
         try {
+          const { data: existingProfile, error: checkError } = await supabase
+            .from('users')
+            .select('*')
+            .eq('id', user.id)
+            .maybeSingle();
+            
+          if (existingProfile) {
+            console.log('Found existing profile on second attempt:', existingProfile);
+            setProfile(existingProfile);
+            return;
+          }
+          
+          // Fallback to the API method only if profile doesn't exist
           console.log('Fetching user profile via API for userId:', user.id);
           
           // Add a timeout to the fetch to prevent it from hanging indefinitely
@@ -245,4 +258,4 @@ export function AuthProvider({ children }: AuthProviderProps) {
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
-} 
+}

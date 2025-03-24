@@ -64,17 +64,22 @@ export async function signUp(email: string, password: string, userData: Partial<
 
 export async function signIn(email: string, password: string) {
   try {
+    console.log('Signing in user with email:', email);
+    
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
 
     if (error) {
+      console.error('Sign-in error:', error.message);
       return { error: { message: error.message } as AuthError };
     }
 
+    console.log('Sign-in successful. User ID:', data.user?.id);
     return { user: data.user };
   } catch (error) {
+    console.error('Unexpected error during sign-in:', error);
     return { error: { message: (error as Error).message } as AuthError };
   }
 }

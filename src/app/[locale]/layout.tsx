@@ -9,6 +9,7 @@ import { locales, Locale } from '@/i18n/config';
 import Navbar from '@/components/layout/navigation/Navbar';
 import ClientAuthWrapper from '@/components/auth/ClientAuthWrapper';
 import Footer from '@/components/layout/Footer';
+import { ToastProvider } from '@/contexts/ToastContext';
 
 export const metadata: Metadata = {
   title: {
@@ -56,11 +57,13 @@ export default async function LocaleLayout({
             timeZone="UTC"
           >
             <ClientAuthWrapper>
-              <Navbar />
-              <main>
-                {children}
-              </main>
-              <Footer />
+              <ToastProvider>
+                <Navbar />
+                <main>
+                  {children}
+                </main>
+                <Footer />
+              </ToastProvider>
             </ClientAuthWrapper>
           </NextIntlClientProvider>
         </body>
