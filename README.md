@@ -93,6 +93,34 @@ This project uses Supabase for:
 
 For more detailed information on working with Supabase in this project, see [SUPABASE.md](SUPABASE.md).
 
+### Authentication Flow
+
+The authentication system uses Supabase Auth with cookie-based session handling for server-side rendering. Key components:
+
+- Client-side authentication with `createClient()` from `@supabase/ssr`
+- Server-side session verification with `createServerSupabaseClient()`
+- Middleware protection for routes
+- Session debugging and persistence improvements
+
+#### Authentication Debugging
+
+To debug authentication issues:
+
+1. Use the test script to check session status:
+   ```bash
+   ./test-auth-flow.sh
+   ```
+
+2. Check browser developer tools:
+   - Network tab to verify cookie handling
+   - Console logs showing session state
+   - Application tab to inspect cookies
+
+3. Server logs show detailed cookie and session information with the `DEBUG=*` environment variable:
+   ```bash
+   DEBUG=* npm run dev
+   ```
+
 ## Deployment
 
 When you're ready to deploy to production:
