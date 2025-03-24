@@ -15,6 +15,37 @@ export function createClient() {
         persistSession: true,
         autoRefreshToken: true,
         detectSessionInUrl: true,
+        flowType: 'pkce',
+        debug: true,
+        storageKey: 'sb-auth-token',
+        storage: {
+          getItem: (key) => {
+            try {
+              const value = localStorage.getItem(key);
+              console.log('[Supabase] Getting storage item:', { key, exists: !!value });
+              return value;
+            } catch (err) {
+              console.error('[Supabase] Error getting from storage:', err);
+              return null;
+            }
+          },
+          setItem: (key, value) => {
+            try {
+              console.log('[Supabase] Setting storage item:', { key, hasValue: !!value });
+              localStorage.setItem(key, value);
+            } catch (err) {
+              console.error('[Supabase] Error setting to storage:', err);
+            }
+          },
+          removeItem: (key) => {
+            try {
+              console.log('[Supabase] Removing storage item:', { key });
+              localStorage.removeItem(key);
+            } catch (err) {
+              console.error('[Supabase] Error removing from storage:', err);
+            }
+          }
+        }
       }
     }
   );
