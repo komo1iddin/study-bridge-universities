@@ -6,13 +6,14 @@ import { signIn } from '@/lib/auth';
 import { useLocale, useTranslations } from 'next-intl';
 import { useToast } from '@/contexts/ToastContext';
 import { redirectWithLocale } from '@/lib/session-utils';
-import { supabase } from '@/lib/supabase';
+import { createClient } from '@/lib/supabase-client';
 
 export default function LoginForm() {
   const searchParams = useSearchParams();
   const locale = useLocale();
   const t = useTranslations('common');
   const { showToast } = useToast();
+  const supabase = createClient();
   
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -48,15 +49,22 @@ export default function LoginForm() {
         const redirectPath = searchParams.get('redirect') || `/profile`;
         console.log('Will redirect to:', redirectPath);
         
-        // DEBUGGING: Log all cookies to see what's available
-        console.log('Document cookies:', document.cookie);
-        
-        // Verify the session is established before redirecting
+        // DEBUGGING: Check session before redirect
         try {
+          // Call our session API to ensure cookies are set properly
+          const sessionResponse = await fetch('/api/auth/session');
+          if (sessionResponse.ok) {
+            const sessionData = await sessionResponse.json();
+            console.log('API session check:', sessionData.user ? 'Authenticated' : 'No session');
+          } else {
+            console.warn('Session API check failed:', await sessionResponse.text());
+          }
+          
+          // Also check client session
           const { data } = await supabase.auth.getSession();
-          console.log('Session verified before redirect:', data.session ? 'Valid' : 'Invalid');
+          console.log('Client session check:', data.session ? 'Valid' : 'Invalid');
           if (data.session) {
-            console.log('Session details:', {
+            console.log('Client session details:', {
               userId: data.session.user.id,
               expiresAt: data.session.expires_at,
               hasAuthToken: !!data.session.access_token,
@@ -67,16 +75,17 @@ export default function LoginForm() {
           console.error('Error checking session:', sessionErr);
         }
         
-        // DEBUGGING: Wait longer before redirecting to ensure session is stored
+        // Redirect with hash to help preserve session
         setTimeout(async () => {
-          console.log('After delay, checking session again...');
+          console.log('After delay, redirecting to:', redirectPath);
           try {
-            const { data: latestData } = await supabase.auth.getSession();
-            console.log('Latest session check before redirect:', latestData.session ? 'Valid' : 'Invalid');
-            // Use our utility function for redirecting with locale
-            redirectWithLocale(locale, redirectPath);
+            // Force a final session refresh before redirect
+            await supabase.auth.refreshSession();
+            
+            // Add a hash to help preserve session state during redirect
+            redirectWithLocale(locale, `${redirectPath}#session-preserved`);
           } catch (err) {
-            console.error('Error in delayed session check:', err);
+            console.error('Error before redirect:', err);
             // Redirect anyway
             redirectWithLocale(locale, redirectPath);
           }
@@ -89,7 +98,7 @@ export default function LoginForm() {
       setError(errorMsg);
       showToast(errorMsg, 'error');
     }
-  }, [email, password, locale, searchParams, showToast]);
+  }, [email, password, locale, searchParams, showToast, supabase.auth]);
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">

@@ -1,4 +1,4 @@
-import { supabase } from './supabase';
+import { createClient } from './supabase-client';
 import { User } from '@supabase/supabase-js';
 
 /**
@@ -8,6 +8,7 @@ import { User } from '@supabase/supabase-js';
 export const getAuthenticatedUser = async (): Promise<User | null> => {
   try {
     console.log('Checking for authenticated user...');
+    const supabase = createClient();
     const { data, error } = await supabase.auth.getSession();
     
     if (error) {
@@ -48,17 +49,43 @@ export const redirectWithLocale = (
   const fullRedirectUrl = `/${locale}${redirectPath}`;
   console.log(`Will redirect to: ${fullRedirectUrl} after ${delay}ms`);
   
-  // Delay the redirect to allow for toasts and state updates
-  setTimeout(() => {
+  // Helper to make the actual redirect
+  const performRedirect = async () => {
     console.log('Executing redirect now...');
     
-    // DEBUGGING: Add a special hash to track redirects
-    const urlWithDebugInfo = `${fullRedirectUrl}#auth_redirect_${Date.now()}`;
-    console.log('Using URL with debug info:', urlWithDebugInfo);
+    try {
+      // Make a final call to check authentication before redirecting
+      const authStatus = await fetch('/api/auth/session');
+      console.log('Auth status before redirect:', authStatus.status);
+    } catch (e) {
+      console.warn('Could not check auth status before redirect:', e);
+    }
+    
+    // Keep any hash that was part of the redirectPath
+    let finalUrl = fullRedirectUrl;
+    let hashPart = '';
+    
+    if (redirectPath.includes('#')) {
+      const parts = redirectPath.split('#');
+      finalUrl = `/${locale}${parts[0]}`;
+      hashPart = `#${parts[1]}`;
+    }
+    
+    // Add a timestamp to the hash to force a fresh page load
+    const timestamp = Date.now();
+    const urlWithHash = `${finalUrl}${hashPart ? hashPart : '#'}t=${timestamp}`;
+    console.log('Using URL with hash:', urlWithHash);
     
     // Force a hard navigation to ensure session is picked up by the server
-    window.location.href = urlWithDebugInfo;
-  }, delay);
+    window.location.href = urlWithHash;
+  };
+  
+  // Delay the redirect to allow for toasts and state updates
+  if (delay > 0) {
+    setTimeout(performRedirect, delay);
+  } else {
+    performRedirect();
+  }
 };
 
 /**

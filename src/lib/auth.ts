@@ -1,9 +1,12 @@
-import { supabase } from '@/lib/supabase';
+import { createClient } from '@/lib/supabase-client';
 import { User } from '@/types/database.types';
 
 export type AuthError = {
   message: string;
 };
+
+// Create a shared supabase instance for auth operations
+const supabase = createClient();
 
 export async function signUp(email: string, password: string, userData: Partial<User>) {
   try {

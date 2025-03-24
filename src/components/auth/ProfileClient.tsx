@@ -6,7 +6,7 @@ import { updateUserProfile, getUserProfile } from '@/lib/auth';
 import { useTranslations } from 'next-intl';
 import { User } from '@/types/database.types';
 import { useAuth } from './AuthProvider';
-import { createBrowserClient } from '@supabase/ssr';
+import { createClient } from '@/lib/supabase-client';
 
 type ProfileClientProps = {
   locale: string;
@@ -31,10 +31,7 @@ export default function ProfileClient({ locale, initialProfile }: ProfileClientP
   const [loading, setLoading] = useState<boolean>(false);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
-  const supabase = createBrowserClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  );
+  const supabase = createClient();
 
   // Debug session state on component mount
   useEffect(() => {
