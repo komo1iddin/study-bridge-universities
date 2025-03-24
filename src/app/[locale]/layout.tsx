@@ -47,9 +47,15 @@ export default async function LocaleLayout({
       <html 
         lang={locale} 
         className="antialiased"
+        suppressHydrationWarning={true}
       >
+        <head>
+          <meta charSet="utf-8" />
+          <meta name="viewport" content="width=device-width, initial-scale=1" />
+        </head>
         <body 
           className={`${GeistSans.variable} ${GeistMono.variable}`}
+          suppressHydrationWarning={true}
         >
           <NextIntlClientProvider 
             locale={locale} 

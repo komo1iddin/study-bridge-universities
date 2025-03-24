@@ -13,13 +13,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return (
-    <html lang="en">
-      <body
-        className={`${GeistSans.variable} ${GeistMono.variable} antialiased`}
-      >
-        {children}
-      </body>
-    </html>
-  );
+  // Just render children directly without HTML/body tags
+  // The [locale]/layout.tsx will handle the HTML structure
+  return children;
 }
