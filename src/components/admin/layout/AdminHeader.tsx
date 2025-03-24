@@ -29,7 +29,7 @@ export default function AdminHeader({ title, breadcrumbs = [], actions }: AdminH
       <div className="px-6 py-4 mx-auto">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">{title}</h1>
+            <h1 className="text-2xl font-bold text-gray-900">{t('layout.title')}</h1>
             
             {breadcrumbs.length > 0 && (
               <nav className="flex mt-1" aria-label="Breadcrumb">
@@ -43,10 +43,10 @@ export default function AdminHeader({ title, breadcrumbs = [], actions }: AdminH
                       )}
                       {breadcrumb.href ? (
                         <Link href={breadcrumb.href} className="text-blue-600 hover:text-blue-800 hover:underline font-medium">
-                          {breadcrumb.name}
+                          {t(`sidebar.${breadcrumb.name.toLowerCase()}`)}
                         </Link>
                       ) : (
-                        <span className="text-gray-500">{breadcrumb.name}</span>
+                        <span className="text-gray-500">{t(`sidebar.${breadcrumb.name.toLowerCase()}`)}</span>
                       )}
                     </li>
                   ))}

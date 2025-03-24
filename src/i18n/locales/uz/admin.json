@@ -2,15 +2,17 @@
   "layout": {
     "title": "Study Bridge Admin paneli",
     "adminAccess": "Admin kirishi",
-    "authorizedVia": "Kirish ruxsati orqali",
+    "authorizedVia": "Orqali tasdiqlangan",
     "specialPrivileges": "maxsus admin huquqlari",
     "email": "elektron pochta",
     "userId": "Foydalanuvchi ID",
     "profile": "Profil",
     "found": "Topildi",
     "notFound": "Topilmadi",
-    "metadataRole": "Metadata rol",
-    "notSet": "O'rnatilmagan"
+    "metadataRole": "Metadata roli",
+    "notSet": "O'rnatilmagan",
+    "adminControls": "Admin boshqaruvi",
+    "loopDetected": "Sikl aniqlandi ogohlantirish"
   },
   "sidebar": {
     "dashboard": "Boshqaruv paneli",
@@ -32,9 +34,14 @@
     "title": "Boshqaruv paneli",
     "stats": {
       "totalUniversities": "Jami universitetlar",
+      "totalUniversitiesDesc": "Tizimdagi jami universitetlar soni",
       "activePrograms": "Faol dasturlar",
+      "activeProgramsDesc": "Mavjud akademik dasturlar soni",
       "availableScholarships": "Mavjud stipendiyalar",
-      "registeredUsers": "Ro'yxatdan o'tgan foydalanuvchilar"
+      "registeredUsers": "Ro'yxatdan o'tgan foydalanuvchilar",
+      "registeredUsersDesc": "Platformada ro'yxatdan o'tgan foydalanuvchilar",
+      "totalApplications": "Jami arizalar",
+      "totalApplicationsDesc": "Dasturlarga topshirilgan jami arizalar soni"
     },
     "recentActivity": {
       "title": "So'nggi faoliyat",
@@ -63,16 +70,45 @@
       "addAdminUserDesc": "Yangi administrator yaratish"
     }
   },
+  "applications": {
+    "recent": "So'nggi arizalar",
+    "searchPlaceholder": "Arizalarni qidirish...",
+    "statusFilter": "Status bo'yicha filtrlash",
+    "noResults": "Arizalar topilmadi",
+    "unknownProgram": "Noma'lum dastur"
+  },
+  "status": {
+    "pending": "Ko'rib chiqilmoqda",
+    "approved": "Tasdiqlangan",
+    "rejected": "Rad etilgan"
+  },
+  "search": {
+    "placeholder": "Qidirish...",
+    "clear": "Qidirishni tozalash"
+  },
+  "filters": {
+    "reset": "Filtrlarni tiklash"
+  },
+  "pagination": {
+    "showing": "Ko'rsatilmoqda",
+    "of": "dan",
+    "rowsPerPage": "Sahifadagi qatorlar",
+    "page": "Sahifa",
+    "firstPage": "Birinchi sahifaga",
+    "previousPage": "Oldingi sahifaga",
+    "nextPage": "Keyingi sahifaga",
+    "lastPage": "Oxirgi sahifaga"
+  },
   "common": {
-    "viewAll": "Hammasini ko'rish",
-    "admin": "Admin",
+    "viewAll": "Barchasini ko'rish",
+    "admin": "Administrator",
     "dashboard": "Boshqaruv paneli",
     "created": "yaratildi",
     "updated": "yangilandi",
     "deleted": "o'chirildi",
     "search": "Qidirish",
     "filter": "Filtrlash",
-    "actions": "Harakatlar",
+    "actions": "Amallar",
     "edit": "Tahrirlash",
     "delete": "O'chirish",
     "save": "Saqlash",
@@ -80,13 +116,76 @@
     "back": "Orqaga",
     "submit": "Yuborish",
     "loading": "Yuklanmoqda",
-    "noData": "Ma'lumotlar mavjud emas",
+    "noData": "Ma'lumot yo'q",
     "success": "Muvaffaqiyatli",
     "error": "Xatolik",
     "confirmation": "Tasdiqlash",
     "areYouSure": "Ishonchingiz komilmi?",
-    "thisActionCannotBeUndone": "Bu amalni bekor qilib bo'lmaydi",
+    "thisActionCannotBeUndone": "Bu amalni qaytarib bo'lmaydi",
     "yes": "Ha",
     "no": "Yo'q"
+  },
+  "components": {
+    "adminHeader": {
+      "title": "Study Bridge Admin paneli",
+      "breadcrumb": {
+        "home": "Bosh sahifa",
+        "admin": "Admin",
+        "dashboard": "Boshqaruv paneli",
+        "universities": "Universitetlar",
+        "programs": "Dasturlar",
+        "scholarships": "Stipendiyalar",
+        "users": "Foydalanuvchilar",
+        "settings": "Sozlamalar"
+      },
+      "userMenu": {
+        "profile": "Profil",
+        "settings": "Sozlamalar",
+        "logout": "Chiqish"
+      }
+    },
+    "adminControls": {
+      "title": "Admin boshqaruvi",
+      "authorizedViaEmail": "Elektron pochta orqali tasdiqlangan",
+      "authorizedViaPrivileges": "Maxsus huquqlar orqali tasdiqlangan",
+      "loopDetected": "Sikl aniqlandi",
+      "resetLoop": "Siklni tiklash",
+      "resetLoopDesc": "Barcha foydalanuvchilar uchun sikl holatini tiklash",
+      "resetLoopSuccess": "Sikl muvaffaqiyatli tiklandi",
+      "resetLoopError": "Siklni tiklashda xatolik yuz berdi",
+      "confirmReset": "Siklni tiklashni xohlaysizmi?",
+      "loopStatus": "Sikl holati",
+      "active": "Faol",
+      "inactive": "Faol emas"
+    },
+    "recentApplicationsList": {
+      "title": "So'nggi arizalar",
+      "empty": "Ko'rsatish uchun arizalar yo'q",
+      "loading": "Arizalar yuklanmoqda...",
+      "error": "Arizalarni yuklashda xatolik yuz berdi",
+      "retry": "Qayta urinish",
+      "columns": {
+        "program": "Dastur",
+        "applicant": "Ariza beruvchi",
+        "status": "Holat",
+        "date": "Sana",
+        "actions": "Amallar"
+      },
+      "actions": {
+        "view": "Ko'rish",
+        "approve": "Tasdiqlash",
+        "reject": "Rad etish"
+      }
+    },
+    "statsCard": {
+      "loading": "Statistika yuklanmoqda...",
+      "error": "Statistikani yuklashda xatolik yuz berdi",
+      "retry": "Qayta yuklash",
+      "noData": "Ko'rsatish uchun ma'lumot yo'q",
+      "total": "Jami",
+      "today": "Bugun",
+      "thisWeek": "Shu hafta",
+      "thisMonth": "Shu oy"
+    }
   }
 } 

@@ -40,7 +40,7 @@ export async function getTranslations(
 // Function to get messages for client components
 export async function getMessages(locale: string = defaultLocale) {
   return {
-    messages: await getTranslations(locale, ['common'])
+    messages: await getTranslations(locale, ['common', 'admin'])
   };
 }
 

@@ -2,18 +2,25 @@ import type { Metadata } from "next";
 import { GeistSans } from 'geist/font/sans';
 import { GeistMono } from 'geist/font/mono';
 import "./globals.css";
+import { Providers } from '@/providers/Providers';
 
 export const metadata: Metadata = {
-  title: 'Study Bridge',
-  description: 'Find universities, programs and scholarships in China for international students',
+  title: "StudyBridge",
+  description: "StudyBridge - Your Bridge to Global Education",
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
-  // Just render children directly without HTML/body tags
-  // The [locale]/layout.tsx will handle the HTML structure
-  return children;
+}) {
+  return (
+    <html lang="en" className={`${GeistSans.variable} ${GeistMono.variable}`}>
+      <body>
+        <Providers>
+          {children}
+        </Providers>
+      </body>
+    </html>
+  );
 }

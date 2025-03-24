@@ -1,7 +1,7 @@
 {
   "layout": {
-    "title": "Админ-панель Study Bridge",
-    "adminAccess": "Админ-доступ",
+    "title": "Панель администратора Study Bridge",
+    "adminAccess": "Доступ администратора",
     "authorizedVia": "Авторизован через",
     "specialPrivileges": "специальные права администратора",
     "email": "электронную почту",
@@ -10,7 +10,9 @@
     "found": "Найден",
     "notFound": "Не найден",
     "metadataRole": "Роль в метаданных",
-    "notSet": "Не установлена"
+    "notSet": "Не установлена",
+    "adminControls": "Управление админ-панелью",
+    "loopDetected": "Предупреждение о цикле"
   },
   "sidebar": {
     "dashboard": "Панель управления",
@@ -21,7 +23,7 @@
     "settings": "Настройки",
     "returnToSite": "Вернуться на сайт",
     "logout": "Выйти",
-    "toggleSidebar": "Свернуть/развернуть меню"
+    "toggleSidebar": "Переключить боковую панель"
   },
   "header": {
     "settings": "Настройки",
@@ -40,7 +42,7 @@
       "title": "Последние действия",
       "viewAll": "Показать все действия",
       "newUser": "Зарегистрирован новый пользователь",
-      "programUpdated": "Обновлена программа",
+      "programUpdated": "Программа обновлена",
       "newUniversity": "Добавлен новый университет",
       "scholarshipUpdated": "Обновлен срок стипендии",
       "by": "От",
@@ -63,9 +65,38 @@
       "addAdminUserDesc": "Создать нового администратора"
     }
   },
+  "applications": {
+    "recent": "Последние заявки",
+    "searchPlaceholder": "Поиск заявок...",
+    "statusFilter": "Фильтр по статусу",
+    "noResults": "Заявки не найдены",
+    "unknownProgram": "Неизвестная программа"
+  },
+  "status": {
+    "pending": "В ожидании",
+    "approved": "Одобрено",
+    "rejected": "Отклонено"
+  },
+  "search": {
+    "placeholder": "Поиск...",
+    "clear": "Очистить поиск"
+  },
+  "filters": {
+    "reset": "Сбросить фильтры"
+  },
+  "pagination": {
+    "showing": "Показано",
+    "of": "из",
+    "rowsPerPage": "Строк на странице",
+    "page": "Страница",
+    "firstPage": "К первой странице",
+    "previousPage": "К предыдущей странице",
+    "nextPage": "К следующей странице",
+    "lastPage": "К последней странице"
+  },
   "common": {
     "viewAll": "Показать все",
-    "admin": "Админ",
+    "admin": "Администратор",
     "dashboard": "Панель управления",
     "created": "создано",
     "updated": "обновлено",
@@ -88,5 +119,68 @@
     "thisActionCannotBeUndone": "Это действие нельзя отменить",
     "yes": "Да",
     "no": "Нет"
+  },
+  "components": {
+    "adminHeader": {
+      "title": "Панель администратора Study Bridge",
+      "breadcrumb": {
+        "home": "Главная",
+        "admin": "Админ",
+        "dashboard": "Панель управления",
+        "universities": "Университеты",
+        "programs": "Программы",
+        "scholarships": "Стипендии",
+        "users": "Пользователи",
+        "settings": "Настройки"
+      },
+      "userMenu": {
+        "profile": "Профиль",
+        "settings": "Настройки",
+        "logout": "Выйти"
+      }
+    },
+    "adminControls": {
+      "title": "Управление админ-панелью",
+      "authorizedViaEmail": "Авторизован через электронную почту",
+      "authorizedViaPrivileges": "Авторизован через специальные права",
+      "loopDetected": "Обнаружен цикл",
+      "resetLoop": "Сбросить цикл",
+      "resetLoopDesc": "Сбросить состояние цикла для всех пользователей",
+      "resetLoopSuccess": "Цикл успешно сброшен",
+      "resetLoopError": "Ошибка при сбросе цикла",
+      "confirmReset": "Вы уверены, что хотите сбросить цикл?",
+      "loopStatus": "Статус цикла",
+      "active": "Активен",
+      "inactive": "Неактивен"
+    },
+    "recentApplicationsList": {
+      "title": "Последние заявки",
+      "empty": "Нет заявок для отображения",
+      "loading": "Загрузка заявок...",
+      "error": "Ошибка при загрузке заявок",
+      "retry": "Повторить",
+      "columns": {
+        "program": "Программа",
+        "applicant": "Заявитель",
+        "status": "Статус",
+        "date": "Дата",
+        "actions": "Действия"
+      },
+      "actions": {
+        "view": "Просмотреть",
+        "approve": "Одобрить",
+        "reject": "Отклонить"
+      }
+    },
+    "statsCard": {
+      "loading": "Загрузка статистики...",
+      "error": "Ошибка при загрузке статистики",
+      "retry": "Повторить загрузку",
+      "noData": "Нет данных для отображения",
+      "total": "Всего",
+      "today": "Сегодня",
+      "thisWeek": "За неделю",
+      "thisMonth": "За месяц"
+    }
   }
 } 

@@ -8,6 +8,7 @@ import { useAuth } from '@/components/auth/AuthProvider';
 import { useLocale } from 'next-intl';
 import { signOut } from '@/lib/auth';
 import { NextIntlClientProvider } from 'next-intl';
+import { motion } from 'framer-motion';
 
 // Admin navigation items with icons
 const navigationItems = [
@@ -159,123 +160,227 @@ export default function SidebarWithTranslations({ onToggleCollapse }: SidebarWit
     router.push('/');
   };
 
+  const sidebarVariants = {
+    expanded: {
+      width: '18rem',
+      transition: {
+        type: "spring",
+        stiffness: 300,
+        damping: 30,
+        staggerChildren: 0.1,
+        delayChildren: 0.2
+      }
+    },
+    collapsed: {
+      width: '5rem',
+      transition: {
+        type: "spring",
+        stiffness: 300,
+        damping: 30,
+        staggerChildren: 0.1,
+        delayChildren: 0.2
+      }
+    }
+  };
+
+  const itemVariants = {
+    expanded: {
+      opacity: 1,
+      x: 0,
+      transition: {
+        type: "spring",
+        stiffness: 300,
+        damping: 30
+      }
+    },
+    collapsed: {
+      opacity: collapsed ? 0 : 1,
+      x: collapsed ? -20 : 0,
+      transition: {
+        type: "spring",
+        stiffness: 300,
+        damping: 30
+      }
+    }
+  };
+
   return (
     <NextIntlClientProvider locale={locale} messages={translations}>
-      <div
-        className={`bg-white text-gray-700 shadow-lg ${
-          collapsed ? 'w-20' : 'w-72'
-        } h-screen overflow-y-auto flex-shrink-0 fixed top-0 left-0 z-40 border-r border-gray-200`}
+      <motion.div
+        className={`bg-white text-gray-700 shadow-lg h-screen overflow-y-auto flex-shrink-0 fixed top-0 left-0 z-40 border-r border-gray-200`}
+        initial={false}
+        animate={collapsed ? "collapsed" : "expanded"}
+        variants={sidebarVariants}
       >
-        <div className="flex items-center justify-between h-16 px-4 border-b border-gray-200">
-          {!collapsed && (
-            <div className="text-xl font-bold text-blue-600 transition-all duration-300">
-              StudyBridge <span className="text-blue-500">Admin</span>
-            </div>
-          )}
-          <button 
+        <motion.div className="flex items-center justify-between h-16 px-4 border-b border-gray-200">
+          <motion.div
+            variants={itemVariants}
+            className="text-xl font-bold text-blue-600"
+          >
+            {!collapsed && (
+              <span>
+                StudyBridge <span className="text-blue-500">Admin</span>
+              </span>
+            )}
+          </motion.div>
+          <motion.button 
             onClick={toggleSidebar} 
             className={`p-2 rounded-md hover:bg-gray-100 text-gray-500 ${collapsed ? 'mx-auto' : 'ml-auto'}`}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.95 }}
             aria-label="Toggle Sidebar"
           >
-            {collapsed ? (
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 5l7 7-7 7M5 5l7 7-7 7" />
-              </svg>
-            ) : (
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 19l-7-7 7-7m8 14l-7-7 7-7" />
-              </svg>
-            )}
-          </button>
-        </div>
+            <motion.div
+              animate={{ rotate: collapsed ? 180 : 0 }}
+              transition={{ type: "spring", stiffness: 300, damping: 30 }}
+            >
+              {collapsed ? (
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 5l7 7-7 7M5 5l7 7-7 7" />
+                </svg>
+              ) : (
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 19l-7-7 7-7m8 14l-7-7 7-7" />
+                </svg>
+              )}
+            </motion.div>
+          </motion.button>
+        </motion.div>
 
         {/* User info */}
         <div className={`px-4 py-5 border-b border-gray-200 ${collapsed ? 'text-center' : ''}`}>
-          <div className={`flex ${collapsed ? 'justify-center' : 'items-center'}`}>
+          <motion.div 
+            className={`flex ${collapsed ? 'justify-center' : 'items-center'}`}
+            animate={{ justifyContent: collapsed ? 'center' : 'flex-start' }}
+            transition={{ duration: 0.3 }}
+          >
             <div className="flex-shrink-0 w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-blue-600 flex items-center justify-center text-white font-medium text-lg">
               {profile?.first_name ? profile.first_name[0] : 'A'}
             </div>
-            {!collapsed && (
-              <div className="ml-3">
-                <p className="text-sm font-semibold text-gray-800">
-                  {profile?.first_name && profile?.last_name
-                    ? `${profile.first_name} ${profile.last_name}`
-                    : profile?.email || "Admin"}
-                </p>
-                <p className="text-xs text-gray-500 mt-0.5 capitalize">{profile?.role || 'admin'}</p>
-              </div>
-            )}
-          </div>
+            <motion.div
+              className="ml-3"
+              animate={{ 
+                opacity: collapsed ? 0 : 1,
+                width: collapsed ? 0 : 'auto',
+                marginLeft: collapsed ? 0 : '0.75rem'
+              }}
+              transition={{ duration: 0.3 }}
+            >
+              {!collapsed && (
+                <>
+                  <p className="text-sm font-semibold text-gray-800">
+                    {profile?.first_name && profile?.last_name
+                      ? `${profile.first_name} ${profile.last_name}`
+                      : profile?.email || "Admin"}
+                  </p>
+                  <p className="text-xs text-gray-500 mt-0.5 capitalize">{profile?.role || 'admin'}</p>
+                </>
+              )}
+            </motion.div>
+          </motion.div>
         </div>
 
         {/* Navigation */}
         <nav className="mt-5 px-2">
-          <ul className="space-y-1">
+          <motion.ul className="space-y-1">
             {navigationItems.map((item) => {
               const isActive = isPathActive(item.href);
               return (
-                <li key={item.id}>
+                <motion.li 
+                  key={item.id}
+                  variants={itemVariants}
+                >
                   <Link
                     href={item.href}
-                    className={`flex items-center px-4 py-3 rounded-lg transition-colors duration-200 ease-in-out 
+                    className={`flex items-center px-4 py-3 rounded-lg transition-all duration-200 ease-in-out 
                     ${isActive
                         ? 'bg-blue-50 text-blue-600'
                         : 'text-gray-600 hover:bg-gray-100 hover:text-blue-600'
                     } ${collapsed ? 'justify-center' : ''}`}
                   >
-                    <span className={`flex-shrink-0 ${isActive ? 'text-blue-600' : 'text-gray-500'}`}>{item.icon}</span>
-                    {!collapsed && (
-                      <span className={`ml-3 font-medium ${isActive ? 'text-blue-600' : ''}`}>
-                        {translations.admin.sidebar[item.id as keyof typeof translations.admin.sidebar]}
-                      </span>
-                    )}
+                    <motion.span 
+                      className={`flex-shrink-0 ${isActive ? 'text-blue-600' : 'text-gray-500'}`}
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      {item.icon}
+                    </motion.span>
+                    <motion.span
+                      variants={itemVariants}
+                      className={`ml-3 font-medium ${isActive ? 'text-blue-600' : ''}`}
+                    >
+                      {!collapsed && translations.admin.sidebar[item.id as keyof typeof translations.admin.sidebar]}
+                    </motion.span>
                     {isActive && !collapsed && (
-                      <span className="ml-auto h-2 w-2 rounded-full bg-blue-600"></span>
+                      <motion.span 
+                        className="ml-auto h-2 w-2 rounded-full bg-blue-600"
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1 }}
+                        exit={{ scale: 0 }}
+                        transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                      />
                     )}
                   </Link>
-                </li>
+                </motion.li>
               );
             })}
-          </ul>
+          </motion.ul>
         </nav>
 
-        {/* Bottom buttons at the bottom */}
-        <div className={`absolute bottom-0 w-full border-t border-gray-200 p-4 bg-white ${collapsed ? 'space-y-4' : 'space-y-3'}`}>
-          <Link
-            href="/"
-            className={`flex items-center text-gray-600 hover:text-blue-600 transition-colors duration-200 px-4 py-2 rounded-lg hover:bg-gray-100 ${
-              collapsed ? 'justify-center' : ''
-            }`}
+        {/* Bottom buttons */}
+        <motion.div 
+          className={`absolute bottom-0 w-full border-t border-gray-200 p-4 bg-white ${collapsed ? 'space-y-4' : 'space-y-3'}`}
+          variants={itemVariants}
+        >
+          <motion.div
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
           >
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M10 19l-7-7m0 0l7-7m-7 7h18"
-              />
-            </svg>
-            {!collapsed && <span className="ml-3 font-medium">{translations.admin.sidebar.returnToSite}</span>}
-          </Link>
+            <Link
+              href="/"
+              className={`flex items-center text-gray-600 hover:text-blue-600 transition-all duration-200 px-4 py-2 rounded-lg hover:bg-gray-100 ${
+                collapsed ? 'justify-center' : ''
+              }`}
+            >
+              <motion.span whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+              </motion.span>
+              <motion.span
+                variants={itemVariants}
+                className="ml-3 font-medium"
+              >
+                {!collapsed && translations.admin.sidebar.returnToSite}
+              </motion.span>
+            </Link>
+          </motion.div>
 
-          <button
-            onClick={handleLogout}
-            className={`flex items-center text-gray-600 hover:text-red-600 transition-colors duration-200 w-full px-4 py-2 rounded-lg hover:bg-gray-100 ${
-              collapsed ? 'justify-center' : ''
-            }`}
+          <motion.div
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
           >
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
-              />
-            </svg>
-            {!collapsed && <span className="ml-3 font-medium">{translations.admin.sidebar.logout}</span>}
-          </button>
-        </div>
-      </div>
+            <button
+              onClick={handleLogout}
+              className={`flex items-center text-gray-600 hover:text-red-600 transition-all duration-200 w-full px-4 py-2 rounded-lg hover:bg-gray-100 ${
+                collapsed ? 'justify-center' : ''
+              }`}
+            >
+              <motion.span whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                </svg>
+              </motion.span>
+              <motion.span
+                variants={itemVariants}
+                className="ml-3 font-medium"
+              >
+                {!collapsed && translations.admin.sidebar.logout}
+              </motion.span>
+            </button>
+          </motion.div>
+        </motion.div>
+      </motion.div>
     </NextIntlClientProvider>
   );
 } 

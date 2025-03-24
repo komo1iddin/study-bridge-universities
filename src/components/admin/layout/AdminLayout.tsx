@@ -2,11 +2,15 @@
 
 import { useEffect, useState, useCallback, useMemo } from 'react';
 import { useAuth } from '@/components/auth/AuthProvider';
-import { useRouter, usePathname } from '@/i18n/utils';
+import { useRouter, usePathname, Link } from '@/i18n/utils';
 import { useLocale, useTranslations } from 'next-intl';
 import { createClient } from '@/lib/supabase-client';
 import AdminLoopReset from '../debug/AdminLoopReset';
 import SidebarWithTranslations from './SidebarWithTranslations';
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
+import { User } from 'lucide-react';
+import { AdminControls } from './AdminControls';
+import { motion, AnimatePresence } from 'framer-motion';
 
 // Вынесем константы из компонента
 const ADMIN_EMAIL = process.env.NEXT_PUBLIC_ADMIN_EMAIL || 'my.main@example.com';
@@ -14,15 +18,19 @@ const TOKEN_EXPIRY = 60 * 60 * 24 * 7; // неделя
 
 interface AdminLayoutProps {
   children: React.ReactNode;
+  locale?: string;
 }
 
-export default function AdminLayout({ children }: AdminLayoutProps) {
+export default function AdminLayout({ children, locale }: AdminLayoutProps) {
   const { user, profile, isLoading } = useAuth();
   const router = useRouter();
-  const locale = useLocale();
+  const currentLocale = useLocale();
   const pathname = usePathname();
   const t = useTranslations('admin');
   
+  // Use provided locale or fallback to current locale
+  const activeLocale = locale || currentLocale;
+
   // Объединяем связанные состояния в один объект
   const [state, setState] = useState({
     sidebarCollapsed: false,
@@ -35,7 +43,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
   });
 
   // Вспомогательные функции для обновления состояния
-  const updateState = useCallback((newState) => {
+  const updateState = useCallback((newState: Partial<typeof state>) => {
     setState(prevState => ({ ...prevState, ...newState }));
   }, []);
 
@@ -224,9 +232,63 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
   ]);
 
   // Функция переключения сайдбара
-  const handleSidebarToggle = useCallback((collapsed) => {
+  const handleSidebarToggle = useCallback((collapsed: boolean) => {
     updateState({ sidebarCollapsed: collapsed });
   }, [updateState]);
+
+  const renderUserInfo = () => {
+    if (!user) return null;
+    
+    return (
+      <div className="flex items-center gap-2">
+        <Avatar className="h-8 w-8">
+          <AvatarImage src={user?.user_metadata?.avatar_url} />
+          <AvatarFallback>
+            <User className="h-4 w-4" />
+          </AvatarFallback>
+        </Avatar>
+        <span className="hidden md:inline text-sm font-medium text-gray-700">
+          {user?.email || 'Admin User'}
+        </span>
+      </div>
+    );
+  };
+
+  const renderProfileMenuItem = () => {
+    if (!user) return null;
+    
+    return (
+      <div className="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+        <Link href={`/profile/${user.id}`}>
+          {t('profile')}
+        </Link>
+      </div>
+    );
+  };
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.1
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    show: { 
+      opacity: 1, 
+      y: 0,
+      transition: {
+        type: "spring",
+        stiffness: 300,
+        damping: 30
+      }
+    }
+  };
 
   // Отображение экрана загрузки
   if (isLoading) {
@@ -266,7 +328,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
               <div className="flex">
                 <p className="text-sm font-bold mr-2">{t('layout.adminAccess')}:</p>
                 <p className="text-sm">
-                  {isMainAdminEmail 
+                  {isMainAdminEmail && user
                     ? `${t('layout.authorizedVia')} ${t('layout.email')} (${user.email})`
                     : `${t('layout.authorizedVia')} ${t('layout.specialPrivileges')}`}
                 </p>
@@ -296,7 +358,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
             <p><strong>Role:</strong> {profile?.role || 'None'}</p>
             <p><strong>Admin Cookie:</strong> {state.isAdminViaSpecialCookie ? 'Present' : 'Not found'}</p>
             <p><strong>Path:</strong> {pathname}</p>
-            <p><strong>Locale:</strong> {locale}</p>
+            <p><strong>Locale:</strong> {activeLocale}</p>
           </div>
           
           <div className="flex justify-between">
@@ -328,32 +390,62 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
     <div className="flex min-h-screen h-screen bg-gray-100 overflow-hidden">
       <SidebarWithTranslations onToggleCollapse={handleSidebarToggle} />
       
-      <div 
-        className={`flex-1 transition-all duration-300 overflow-auto ${
-          state.sidebarCollapsed ? 'pl-20' : 'pl-72'
-        }`}
+      <motion.div 
+        className="flex flex-col flex-1"
+        animate={{
+          paddingLeft: state.sidebarCollapsed ? '5rem' : '18rem'
+        }}
+        transition={{
+          type: "spring",
+          stiffness: 300,
+          damping: 30
+        }}
       >
-        {hasAdminAccess && (
-          <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-2 rounded mb-4 mx-4 mt-4">
-            <p className="text-sm">
-              <strong>{t('layout.adminAccess')}:</strong> {isMainAdminEmail 
-                ? `${t('layout.authorizedVia')} ${t('layout.email')} (${user.email})`
-                : `${t('layout.authorizedVia')} ${t('layout.specialPrivileges')}`}
-            </p>
+        {/* Header with user info and admin controls */}
+        <motion.div 
+          className="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6"
+          variants={itemVariants}
+          initial="hidden"
+          animate="show"
+        >
+          <div className="flex items-center gap-4">
+            {renderUserInfo()}
+            {renderProfileMenuItem()}
           </div>
-        )}
-        
-        {/* Показываем компонент сброса при обнаружении цикла */}
-        {(state.showLoopReset || 
-          localStorage?.getItem('loop_detected') === 'true' || 
-          sessionStorage?.getItem('loop_detected') === 'true') && (
-          <div className="mx-4 mt-2 mb-4">
-            <AdminLoopReset />
-          </div>
-        )}
-        
-        <main className="h-full overflow-auto">{children}</main>
-      </div>
+          
+          {hasAdminAccess && (
+            <AdminControls
+              isMainAdmin={isMainAdminEmail}
+              userEmail={user?.email}
+              showLoopReset={
+                state.showLoopReset ||
+                localStorage?.getItem('loop_detected') === 'true' ||
+                sessionStorage?.getItem('loop_detected') === 'true'
+              }
+            />
+          )}
+        </motion.div>
+
+        {/* Main content */}
+        <motion.main 
+          className="flex-1 overflow-auto p-6"
+          variants={containerVariants}
+          initial="hidden"
+          animate="show"
+        >
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={pathname}
+              variants={itemVariants}
+              initial="hidden"
+              animate="show"
+              exit={{ opacity: 0, y: -20 }}
+            >
+              {children}
+            </motion.div>
+          </AnimatePresence>
+        </motion.main>
+      </motion.div>
     </div>
   );
 }

@@ -10,7 +10,9 @@
     "found": "Found",
     "notFound": "Not found",
     "metadataRole": "Metadata Role",
-    "notSet": "Not set"
+    "notSet": "Not set",
+    "adminControls": "Admin Controls",
+    "loopDetected": "Loop Detection Warning"
   },
   "sidebar": {
     "dashboard": "Dashboard",
@@ -63,6 +65,35 @@
       "addAdminUserDesc": "Create a new administrator"
     }
   },
+  "applications": {
+    "recent": "Recent Applications",
+    "searchPlaceholder": "Search applications...",
+    "statusFilter": "Filter by Status",
+    "noResults": "No applications found",
+    "unknownProgram": "Unknown Program"
+  },
+  "status": {
+    "pending": "Pending",
+    "approved": "Approved",
+    "rejected": "Rejected"
+  },
+  "search": {
+    "placeholder": "Search...",
+    "clear": "Clear search"
+  },
+  "filters": {
+    "reset": "Reset filters"
+  },
+  "pagination": {
+    "showing": "Showing",
+    "of": "of",
+    "rowsPerPage": "Rows per page",
+    "page": "Page",
+    "firstPage": "Go to first page",
+    "previousPage": "Go to previous page",
+    "nextPage": "Go to next page",
+    "lastPage": "Go to last page"
+  },
   "common": {
     "viewAll": "View all",
     "admin": "Admin",
@@ -88,5 +119,68 @@
     "thisActionCannotBeUndone": "This action cannot be undone",
     "yes": "Yes",
     "no": "No"
+  },
+  "components": {
+    "adminHeader": {
+      "title": "Study Bridge Admin",
+      "breadcrumb": {
+        "home": "Home",
+        "admin": "Admin",
+        "dashboard": "Dashboard",
+        "universities": "Universities",
+        "programs": "Programs",
+        "scholarships": "Scholarships",
+        "users": "Users",
+        "settings": "Settings"
+      },
+      "userMenu": {
+        "profile": "Profile",
+        "settings": "Settings",
+        "logout": "Logout"
+      }
+    },
+    "adminControls": {
+      "title": "Admin Controls",
+      "authorizedViaEmail": "Authorized via email",
+      "authorizedViaPrivileges": "Authorized via special privileges",
+      "loopDetected": "Loop Detection Warning",
+      "resetLoop": "Reset Loop",
+      "resetLoopDesc": "Reset loop state for all users",
+      "resetLoopSuccess": "Loop reset successfully",
+      "resetLoopError": "Error resetting loop",
+      "confirmReset": "Are you sure you want to reset the loop?",
+      "loopStatus": "Loop Status",
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "recentApplicationsList": {
+      "title": "Recent Applications",
+      "empty": "No applications to display",
+      "loading": "Loading applications...",
+      "error": "Error loading applications",
+      "retry": "Retry",
+      "columns": {
+        "program": "Program",
+        "applicant": "Applicant",
+        "status": "Status",
+        "date": "Date",
+        "actions": "Actions"
+      },
+      "actions": {
+        "view": "View",
+        "approve": "Approve",
+        "reject": "Reject"
+      }
+    },
+    "statsCard": {
+      "loading": "Loading statistics...",
+      "error": "Error loading statistics",
+      "retry": "Retry loading",
+      "noData": "No data to display",
+      "total": "Total",
+      "today": "Today",
+      "thisWeek": "This Week",
+      "thisMonth": "This Month"
+    }
   }
 }

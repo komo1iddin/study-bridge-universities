@@ -1,26 +1,58 @@
-import { ReactNode } from 'react';
+'use client';
+
+import { Locale } from '@/i18n/config';
 import AdminLayout from '@/components/admin/layout/AdminLayout';
-import ClientAuthWrapper from '@/components/auth/ClientAuthWrapper';
+import { QueryProvider } from '@/providers';
+import { motion, AnimatePresence } from 'framer-motion';
 
-export const metadata = {
-  title: 'Admin Dashboard | Study Bridge',
-  description: 'Admin Dashboard for Study Bridge University Portal',
-};
-
-interface AdminPageLayoutProps {
-  children: ReactNode;
+interface AdminRootLayoutProps {
+  children: React.ReactNode;
   params: {
-    locale: string;
+    locale: Locale;
   };
 }
 
-export default async function AdminPageLayout({ children, params }: AdminPageLayoutProps) {
-  // In Next.js 15, we need to ensure params is fully resolved
-  const resolvedParams = await Promise.resolve(params);
-  
+const pageVariants = {
+  initial: {
+    opacity: 0,
+    scale: 0.98,
+  },
+  animate: {
+    opacity: 1,
+    scale: 1,
+  },
+  exit: {
+    opacity: 0,
+    scale: 1.02,
+  },
+};
+
+const pageTransition = {
+  type: "spring",
+  stiffness: 300,
+  damping: 30,
+};
+
+export default function AdminRootLayout({
+  children,
+  params: { locale },
+}: AdminRootLayoutProps) {
   return (
-    <ClientAuthWrapper>
-      <AdminLayout>{children}</AdminLayout>
-    </ClientAuthWrapper>
+    <QueryProvider>
+      <AdminLayout locale={locale}>
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={locale}
+            initial="initial"
+            animate="animate"
+            exit="exit"
+            variants={pageVariants}
+            transition={pageTransition}
+          >
+            {children}
+          </motion.div>
+        </AnimatePresence>
+      </AdminLayout>
+    </QueryProvider>
   );
 } 
