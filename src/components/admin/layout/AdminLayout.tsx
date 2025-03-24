@@ -484,12 +484,14 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
 
   // Final render for admin users with normal dashboard
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="flex min-h-screen h-screen bg-gray-100 overflow-hidden">
       <SidebarWithTranslations onToggleCollapse={setSidebarCollapsed} />
       
       {/* Main content area */}
       <div 
-        className={`${sidebarCollapsed ? 'ml-16' : 'ml-64'} transition-all duration-300 min-h-screen`}
+        className={`flex-1 transition-all duration-300 overflow-auto ${
+          sidebarCollapsed ? 'pl-20' : 'pl-72'
+        }`}
       >
         {/* Debug output for translation data */}
         {debugMode && (
@@ -523,7 +525,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
           </div>
         )}
         
-        <main className="p-0">{children}</main>
+        <main className="h-full overflow-auto">{children}</main>
       </div>
     </div>
   );

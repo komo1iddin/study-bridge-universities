@@ -164,7 +164,7 @@ export default function SidebarWithTranslations({ onToggleCollapse }: SidebarWit
       <div
         className={`bg-white text-gray-700 shadow-lg ${
           collapsed ? 'w-20' : 'w-72'
-        } min-h-screen transition-all duration-300 ease-in-out fixed left-0 top-0 z-40 border-r border-gray-200`}
+        } h-screen overflow-y-auto flex-shrink-0 fixed top-0 left-0 z-40 border-r border-gray-200`}
       >
         <div className="flex items-center justify-between h-16 px-4 border-b border-gray-200">
           {!collapsed && (
