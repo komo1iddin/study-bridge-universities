@@ -37,7 +37,7 @@ const Navbar = () => {
         <div className="flex justify-between items-center h-16">
           {/* Logo and brand */}
           <div className="flex-shrink-0">
-            <Link href={`/${locale}`} className="flex items-center">
+            <Link href="/" className="flex items-center">
               <span className="text-xl font-bold text-blue-600">Study Bridge</span>
             </Link>
           </div>
@@ -45,22 +45,19 @@ const Navbar = () => {
           {/* Desktop menu */}
           <div className="hidden md:block">
             <div className="ml-10 flex items-center space-x-4">
-              {navLinks.map((link) => {
-                const href = link.href.toString() === '/' ? `/${locale}` : `/${locale}${link.href}`;
-                return (
-                  <Link
-                    key={link.href.toString()}
-                    href={href}
-                    className={`px-3 py-2 rounded-md text-sm font-medium ${
-                      isActiveLink(link.href.toString())
-                        ? 'bg-blue-50 text-blue-700'
-                        : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
-                    }`}
-                  >
-                    {link.label}
-                  </Link>
-                );
-              })}
+              {navLinks.map((link) => (
+                <Link
+                  key={link.href.toString()}
+                  href={link.href}
+                  className={`px-3 py-2 rounded-md text-sm font-medium ${
+                    isActiveLink(link.href.toString())
+                      ? 'bg-blue-50 text-blue-700'
+                      : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
+                  }`}
+                >
+                  {link.label}
+                </Link>
+              ))}
             </div>
           </div>
           
@@ -114,22 +111,20 @@ const Navbar = () => {
       {isMenuOpen && (
         <div className="md:hidden">
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-            {navLinks.map((link) => {
-              const href = link.href.toString() === '/' ? `/${locale}` : `/${locale}${link.href}`;
-              return (
-                <Link
-                  key={link.href.toString()}
-                  href={href}
-                  className={`block px-3 py-2 rounded-md text-base font-medium ${
-                    isActiveLink(link.href.toString())
-                      ? 'bg-blue-50 text-blue-700'
-                      : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
-                  }`}
-                >
-                  {link.label}
-                </Link>
-              );
-            })}
+            {navLinks.map((link) => (
+              <Link
+                key={link.href.toString()}
+                href={link.href}
+                className={`block px-3 py-2 rounded-md text-base font-medium ${
+                  isActiveLink(link.href.toString())
+                    ? 'bg-blue-50 text-blue-700'
+                    : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
+                }`}
+                onClick={() => setIsMenuOpen(false)}
+              >
+                {link.label}
+              </Link>
+            ))}
             <div className="pt-4 pb-3 border-t border-gray-200">
               <div className="flex gap-2 px-3">
                 <UserMenu locale={locale} />
