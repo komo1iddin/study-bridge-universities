@@ -1,3 +1,5 @@
+'use client';
+
 import { useState } from 'react';
 import AdminHeader from '@/components/admin/layout/AdminHeader';
 import { Button } from '@/components/ui/button';
