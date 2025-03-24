@@ -11,7 +11,36 @@
     "login": "Войти",
     "register": "Регистрация",
     "logout": "Выйти",
-    "profile": "Профиль"
+    "profile": "Профиль",
+    "signIn": "Войти",
+    "signUp": "Зарегистрироваться",
+    "myApplications": "Мои заявки",
+    "settings": "Настройки",
+    "signOut": "Выйти",
+    "email": "Электронная почта",
+    "password": "Пароль",
+    "confirmPassword": "Подтвердите пароль",
+    "firstName": "Имя",
+    "lastName": "Фамилия",
+    "phone": "Номер телефона",
+    "rememberMe": "Запомнить меня",
+    "forgotPassword": "Забыли пароль?",
+    "noAccount": "Нет аккаунта?",
+    "haveAccount": "Уже есть аккаунт?",
+    "createAccount": "Создать аккаунт",
+    "signingIn": "Выполняется вход...",
+    "signingUp": "Регистрация...",
+    "emailPlaceholder": "ваша.почта@example.com",
+    "passwordPlaceholder": "Введите ваш пароль",
+    "confirmPasswordPlaceholder": "Подтвердите ваш пароль",
+    "firstNamePlaceholder": "Введите ваше имя",
+    "lastNamePlaceholder": "Введите вашу фамилию",
+    "phonePlaceholder": "Введите ваш номер телефона",
+    "passwordsDoNotMatch": "Пароли не совпадают",
+    "invalidCredentials": "Неверный email или пароль",
+    "accountCreated": "Аккаунт успешно создан",
+    "passwordRequirements": "Пароль должен быть не менее 6 символов",
+    "completeProfileLater": "Вы можете заполнить информацию профиля после регистрации"
   },
   "navigation": {
     "home": "Главная",
@@ -27,7 +56,10 @@
     "about": "О нас",
     "terms": "Условия использования",
     "privacy": "Политика конфиденциальности",
-    "copyright": "© 2024 Study Bridge. Все права защищены."
+    "copyright": "© 2024 Study Bridge. Все права защищены.",
+    "rights": "Все права защищены",
+    "privacyPolicy": "Политика конфиденциальности",
+    "support": "Поддержка"
   },
   "actions": {
     "search": "Поиск",
@@ -44,5 +76,6 @@
     "downloadBrochure": "Скачать брошюру",
     "contactUs": "Связаться с нами",
     "readMore": "Читать далее"
-  }
+  },
+  "appName": "Study Bridge"
 } 

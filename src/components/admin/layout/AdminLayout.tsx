@@ -1,12 +1,12 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import AdminSidebar from './AdminSidebar';
 import { useAuth } from '@/components/auth/AuthProvider';
 import { useRouter, usePathname } from '@/i18n/utils';
-import { useLocale } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { createClient } from '@/lib/supabase-client';
 import AdminLoopReset from '../debug/AdminLoopReset';
+import SidebarWithTranslations from './SidebarWithTranslations';
 
 interface AdminLayoutProps {
   children: React.ReactNode;
@@ -17,6 +17,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
   const router = useRouter();
   const locale = useLocale();
   const pathname = usePathname();
+  const t = useTranslations('admin');
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [isRedirecting, setIsRedirecting] = useState(false);
   const [debugMode, setDebugMode] = useState(false); // Disable debug mode by default
@@ -363,7 +364,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500 mb-4"></div>
-        <p>Loading authentication state...</p>
+        <p>{t('common.loading')}...</p>
       </div>
     );
   }
@@ -398,24 +399,24 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
       // For target admin email, render the normal admin layout with extra info
       return (
         <div className="flex min-h-screen bg-gray-100">
-          <AdminSidebar onToggleCollapse={handleSidebarToggle} />
+          <SidebarWithTranslations onToggleCollapse={handleSidebarToggle} />
           
           <div className={`flex-1 ${sidebarCollapsed ? 'ml-16' : 'ml-64'} transition-all duration-300`}>
             <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4 mx-4 mt-4">
               <div className="flex">
                 <p className="text-sm font-bold mr-2">
-                  Special Admin Access Mode:
+                  {t('layout.adminAccess')}:
                 </p>
                 <p className="text-sm">
                   {isMainAdminEmail 
-                    ? `Authorized via email (${user.email})`
-                    : 'Authorized via admin cookies/tokens'}
+                    ? `${t('layout.authorizedVia')} ${t('layout.email')} (${user.email})`
+                    : `${t('layout.authorizedVia')} ${t('layout.specialPrivileges')}`}
                 </p>
               </div>
               <div className="text-xs mt-1">
-                <span className="font-semibold">User ID:</span> {user?.id || 'Not available'} | 
-                <span className="font-semibold ml-2">Profile:</span> {profile ? 'Found' : 'Not found'} |
-                <span className="font-semibold ml-2">Metadata Role:</span> {user?.user_metadata?.role || 'Not set'}
+                <span className="font-semibold">{t('layout.userId')}:</span> {user?.id || 'Not available'} | 
+                <span className="font-semibold ml-2">{t('layout.profile')}:</span> {profile ? t('layout.found') : t('layout.notFound')} |
+                <span className="font-semibold ml-2">{t('layout.metadataRole')}:</span> {user?.user_metadata?.role || t('layout.notSet')}
               </div>
             </div>
             <main className="p-0">{children}</main>
@@ -483,16 +484,32 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
 
   // Final render for admin users with normal dashboard
   return (
-    <div className="flex min-h-screen bg-gray-100">
-      <AdminSidebar onToggleCollapse={handleSidebarToggle} />
+    <div className="min-h-screen bg-gray-100">
+      <SidebarWithTranslations onToggleCollapse={setSidebarCollapsed} />
       
-      <div className={`flex-1 ${sidebarCollapsed ? 'ml-16' : 'ml-64'} transition-all duration-300`}>
+      {/* Main content area */}
+      <div 
+        className={`${sidebarCollapsed ? 'ml-16' : 'ml-64'} transition-all duration-300 min-h-screen`}
+      >
+        {/* Debug output for translation data */}
+        {debugMode && (
+          <div className="bg-red-50 border border-red-200 text-red-800 p-4 mb-4 text-xs">
+            <details>
+              <summary className="cursor-pointer font-semibold">Translation Debug Data</summary>
+              <pre className="mt-2 whitespace-pre-wrap">
+                Translations loaded: {typeof t === 'function' ? 'Yes' : 'No'}{'\n'}
+                Sample translation key: {typeof t === 'function' ? t('sidebar.dashboard') : 'Not available'}
+              </pre>
+            </details>
+          </div>
+        )}
+
         {hasAdminAccess && (
           <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-2 rounded mb-4 mx-4 mt-4">
             <p className="text-sm">
-              <strong>Admin Access:</strong> {isMainAdminEmail 
-                ? `Authorized via email (${user.email})`
-                : 'Authorized via special admin privileges'}
+              <strong>{t('layout.adminAccess')}:</strong> {isMainAdminEmail 
+                ? `${t('layout.authorizedVia')} ${t('layout.email')} (${user.email})`
+                : `${t('layout.authorizedVia')} ${t('layout.specialPrivileges')}`}
             </p>
           </div>
         )}

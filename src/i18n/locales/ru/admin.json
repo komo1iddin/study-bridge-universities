@@ -1,0 +1,92 @@
+{
+  "layout": {
+    "title": "Админ-панель Study Bridge",
+    "adminAccess": "Админ-доступ",
+    "authorizedVia": "Авторизован через",
+    "specialPrivileges": "специальные права администратора",
+    "email": "электронную почту",
+    "userId": "ID пользователя",
+    "profile": "Профиль",
+    "found": "Найден",
+    "notFound": "Не найден",
+    "metadataRole": "Роль в метаданных",
+    "notSet": "Не установлена"
+  },
+  "sidebar": {
+    "dashboard": "Панель управления",
+    "universities": "Университеты",
+    "programs": "Программы",
+    "scholarships": "Стипендии",
+    "users": "Пользователи",
+    "settings": "Настройки",
+    "returnToSite": "Вернуться на сайт",
+    "logout": "Выйти",
+    "toggleSidebar": "Свернуть/развернуть меню"
+  },
+  "header": {
+    "settings": "Настройки",
+    "profile": "Профиль",
+    "logout": "Выйти"
+  },
+  "dashboard": {
+    "title": "Панель управления",
+    "stats": {
+      "totalUniversities": "Всего университетов",
+      "activePrograms": "Активные программы",
+      "availableScholarships": "Доступные стипендии",
+      "registeredUsers": "Зарегистрированные пользователи"
+    },
+    "recentActivity": {
+      "title": "Последние действия",
+      "viewAll": "Показать все действия",
+      "newUser": "Зарегистрирован новый пользователь",
+      "programUpdated": "Обновлена программа",
+      "newUniversity": "Добавлен новый университет",
+      "scholarshipUpdated": "Обновлен срок стипендии",
+      "by": "От",
+      "item": "Элемент",
+      "time": {
+        "minutesAgo": "минут назад",
+        "hoursAgo": "часов назад",
+        "daysAgo": "дней назад"
+      }
+    },
+    "quickActions": {
+      "title": "Быстрые действия",
+      "addUniversity": "Добавить университет",
+      "addUniversityDesc": "Создать профиль нового университета",
+      "addProgram": "Добавить программу",
+      "addProgramDesc": "Создать новую учебную программу",
+      "addScholarship": "Добавить стипендию",
+      "addScholarshipDesc": "Создать новое стипендиальное предложение",
+      "addAdminUser": "Добавить администратора",
+      "addAdminUserDesc": "Создать нового администратора"
+    }
+  },
+  "common": {
+    "viewAll": "Показать все",
+    "admin": "Админ",
+    "dashboard": "Панель управления",
+    "created": "создано",
+    "updated": "обновлено",
+    "deleted": "удалено",
+    "search": "Поиск",
+    "filter": "Фильтр",
+    "actions": "Действия",
+    "edit": "Редактировать",
+    "delete": "Удалить",
+    "save": "Сохранить",
+    "cancel": "Отмена",
+    "back": "Назад",
+    "submit": "Отправить",
+    "loading": "Загрузка",
+    "noData": "Данные отсутствуют",
+    "success": "Успешно",
+    "error": "Ошибка",
+    "confirmation": "Подтверждение",
+    "areYouSure": "Вы уверены?",
+    "thisActionCannotBeUndone": "Это действие нельзя отменить",
+    "yes": "Да",
+    "no": "Нет"
+  }
+} 

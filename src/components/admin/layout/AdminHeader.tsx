@@ -3,6 +3,7 @@
 import { useAuth } from '@/components/auth/AuthProvider';
 import { signOut } from '@/lib/auth';
 import { useRouter, Link } from '@/i18n/utils';
+import { useTranslations } from 'next-intl';
 
 interface AdminHeaderProps {
   title: string;
@@ -16,6 +17,7 @@ interface AdminHeaderProps {
 export default function AdminHeader({ title, breadcrumbs = [], actions }: AdminHeaderProps) {
   const { profile } = useAuth();
   const router = useRouter();
+  const t = useTranslations('admin');
 
   const handleLogout = async () => {
     await signOut();
@@ -61,7 +63,7 @@ export default function AdminHeader({ title, breadcrumbs = [], actions }: AdminH
                 {profile?.first_name ? profile.first_name[0] : 'A'}
               </div>
               <span className="text-sm font-medium text-gray-700 group-hover:text-gray-900">
-                {profile?.first_name || 'Admin'}
+                {profile?.first_name || t('common.admin')}
               </span>
               <svg
                 className="w-4 h-4 text-gray-500 group-hover:text-gray-700"
@@ -78,19 +80,19 @@ export default function AdminHeader({ title, breadcrumbs = [], actions }: AdminH
                 href="/admin/settings"
                 className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
               >
-                Settings
+                {t('header.settings')}
               </Link>
               <Link
                 href="/profile"
                 className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
               >
-                Profile
+                {t('header.profile')}
               </Link>
               <button
                 onClick={handleLogout}
                 className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
               >
-                Logout
+                {t('header.logout')}
               </button>
             </div>
           </div>

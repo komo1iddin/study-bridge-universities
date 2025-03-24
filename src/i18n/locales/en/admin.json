@@ -1,0 +1,92 @@
+{
+  "layout": {
+    "title": "Study Bridge Admin",
+    "adminAccess": "Admin Access",
+    "authorizedVia": "Authorized via",
+    "specialPrivileges": "special admin privileges",
+    "email": "email",
+    "userId": "User ID",
+    "profile": "Profile",
+    "found": "Found",
+    "notFound": "Not found",
+    "metadataRole": "Metadata Role",
+    "notSet": "Not set"
+  },
+  "sidebar": {
+    "dashboard": "Dashboard",
+    "universities": "Universities",
+    "programs": "Programs",
+    "scholarships": "Scholarships",
+    "users": "Users",
+    "settings": "Settings",
+    "returnToSite": "Return to Site",
+    "logout": "Logout",
+    "toggleSidebar": "Toggle Sidebar"
+  },
+  "header": {
+    "settings": "Settings",
+    "profile": "Profile",
+    "logout": "Logout"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "stats": {
+      "totalUniversities": "Total Universities",
+      "activePrograms": "Active Programs",
+      "availableScholarships": "Available Scholarships",
+      "registeredUsers": "Registered Users"
+    },
+    "recentActivity": {
+      "title": "Recent Activity",
+      "viewAll": "View all activity",
+      "newUser": "New user registered",
+      "programUpdated": "Program updated",
+      "newUniversity": "New university added",
+      "scholarshipUpdated": "Scholarship deadline updated",
+      "by": "By",
+      "item": "Item",
+      "time": {
+        "minutesAgo": "minutes ago",
+        "hoursAgo": "hours ago",
+        "daysAgo": "days ago"
+      }
+    },
+    "quickActions": {
+      "title": "Quick Actions",
+      "addUniversity": "Add University",
+      "addUniversityDesc": "Create a new university profile",
+      "addProgram": "Add Program",
+      "addProgramDesc": "Create a new study program",
+      "addScholarship": "Add Scholarship",
+      "addScholarshipDesc": "Create a new scholarship offer",
+      "addAdminUser": "Add Admin User",
+      "addAdminUserDesc": "Create a new administrator"
+    }
+  },
+  "common": {
+    "viewAll": "View all",
+    "admin": "Admin",
+    "dashboard": "Dashboard",
+    "created": "created",
+    "updated": "updated",
+    "deleted": "deleted",
+    "search": "Search",
+    "filter": "Filter",
+    "actions": "Actions",
+    "edit": "Edit",
+    "delete": "Delete",
+    "save": "Save",
+    "cancel": "Cancel",
+    "back": "Back",
+    "submit": "Submit",
+    "loading": "Loading",
+    "noData": "No data available",
+    "success": "Success",
+    "error": "Error",
+    "confirmation": "Confirmation",
+    "areYouSure": "Are you sure?",
+    "thisActionCannotBeUndone": "This action cannot be undone",
+    "yes": "Yes",
+    "no": "No"
+  }
+}

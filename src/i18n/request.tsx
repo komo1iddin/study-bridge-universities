@@ -6,7 +6,7 @@ import { getTranslations } from './utils';
 export default getRequestConfig(async ({ locale = defaultLocale }) => {
   return {
     locale,
-    messages: await getTranslations(locale, ['common']),
+    messages: await getTranslations(locale, ['common', 'admin']),
     timeZone: 'UTC'
   };
 }); 

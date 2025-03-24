@@ -11,7 +11,36 @@
     "login": "Kirish",
     "register": "Ro'yxatdan o'tish",
     "logout": "Chiqish",
-    "profile": "Profil"
+    "profile": "Profil",
+    "signIn": "Kirish",
+    "signUp": "Ro'yxatdan o'tish",
+    "myApplications": "Mening arizalarim",
+    "settings": "Sozlamalar",
+    "signOut": "Chiqish",
+    "email": "Elektron pochta",
+    "password": "Parol",
+    "confirmPassword": "Parolni tasdiqlang",
+    "firstName": "Ism",
+    "lastName": "Familiya",
+    "phone": "Telefon raqami",
+    "rememberMe": "Eslab qolish",
+    "forgotPassword": "Parolni unutdingizmi?",
+    "noAccount": "Hisobingiz yo'qmi?",
+    "haveAccount": "Hisobingiz bormi?",
+    "createAccount": "Hisob yaratish",
+    "signingIn": "Kirish amalga oshirilmoqda...",
+    "signingUp": "Ro'yxatdan o'tish...",
+    "emailPlaceholder": "sizning.pochta@example.com",
+    "passwordPlaceholder": "Parolingizni kiriting",
+    "confirmPasswordPlaceholder": "Parolingizni tasdiqlang",
+    "firstNamePlaceholder": "Ismingizni kiriting",
+    "lastNamePlaceholder": "Familiyangizni kiriting",
+    "phonePlaceholder": "Telefon raqamingizni kiriting",
+    "passwordsDoNotMatch": "Parollar mos kelmaydi",
+    "invalidCredentials": "Noto'g'ri email yoki parol",
+    "accountCreated": "Hisob muvaffaqiyatli yaratildi",
+    "passwordRequirements": "Parol kamida 6 ta belgidan iborat bo'lishi kerak",
+    "completeProfileLater": "Ro'yxatdan o'tgandan so'ng profil ma'lumotlarini to'ldirishingiz mumkin"
   },
   "navigation": {
     "home": "Bosh sahifa",
@@ -27,7 +56,10 @@
     "about": "Biz haqimizda",
     "terms": "Foydalanish shartlari",
     "privacy": "Maxfiylik siyosati",
-    "copyright": "© 2024 Study Bridge. Barcha huquqlar himoyalangan."
+    "copyright": "© 2024 Study Bridge. Barcha huquqlar himoyalangan.",
+    "rights": "Barcha huquqlar himoyalangan",
+    "privacyPolicy": "Maxfiylik siyosati",
+    "support": "Qo'llab-quvvatlash"
   },
   "actions": {
     "search": "Qidirish",
@@ -44,5 +76,6 @@
     "downloadBrochure": "Broshyurani yuklab olish",
     "contactUs": "Biz bilan bog'lanish",
     "readMore": "Ko'proq o'qish"
-  }
+  },
+  "appName": "Study Bridge"
 } 

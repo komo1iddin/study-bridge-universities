@@ -5,14 +5,14 @@ import { Link } from '@/i18n/utils';
 import { useRouter } from '@/i18n/utils';
 import { usePathname } from 'next/navigation';
 import { useAuth } from '@/components/auth/AuthProvider';
-import { useLocale } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { signOut } from '@/lib/auth';
 
-// Admin navigation items with icons
+// Admin navigation items with icons (we'll use translations for the names)
 const navigationItems = [
   {
     id: 'dashboard',
-    name: 'Dashboard',
+    translateKey: 'sidebar.dashboard',
     href: '/admin',
     icon: (
       <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -27,7 +27,7 @@ const navigationItems = [
   },
   {
     id: 'universities',
-    name: 'Universities',
+    translateKey: 'sidebar.universities',
     href: '/admin/universities',
     icon: (
       <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -42,7 +42,7 @@ const navigationItems = [
   },
   {
     id: 'programs',
-    name: 'Programs',
+    translateKey: 'sidebar.programs',
     href: '/admin/programs',
     icon: (
       <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -57,7 +57,7 @@ const navigationItems = [
   },
   {
     id: 'scholarships',
-    name: 'Scholarships',
+    translateKey: 'sidebar.scholarships',
     href: '/admin/scholarships',
     icon: (
       <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -72,7 +72,7 @@ const navigationItems = [
   },
   {
     id: 'users',
-    name: 'Users',
+    translateKey: 'sidebar.users',
     href: '/admin/users',
     icon: (
       <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -87,7 +87,7 @@ const navigationItems = [
   },
   {
     id: 'settings',
-    name: 'Settings',
+    translateKey: 'sidebar.settings',
     href: '/admin/settings',
     icon: (
       <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -118,6 +118,7 @@ export default function AdminSidebar({ onToggleCollapse }: AdminSidebarProps) {
   const { profile } = useAuth();
   const locale = useLocale();
   const router = useRouter();
+  const t = useTranslations('admin');
 
   const toggleSidebar = () => {
     const newCollapsedState = !collapsed;
@@ -163,7 +164,11 @@ export default function AdminSidebar({ onToggleCollapse }: AdminSidebarProps) {
             StudyBridge <span className="text-blue-400">Admin</span>
           </div>
         )}
-        <button onClick={toggleSidebar} className="p-1 rounded-md hover:bg-gray-700">
+        <button 
+          onClick={toggleSidebar} 
+          className="p-1 rounded-md hover:bg-gray-700"
+          aria-label={t('sidebar.toggleSidebar')}
+        >
           {collapsed ? (
             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 5l7 7-7 7M5 5l7 7-7 7" />
@@ -187,7 +192,7 @@ export default function AdminSidebar({ onToggleCollapse }: AdminSidebarProps) {
               <p className="text-sm font-medium">
                 {profile?.first_name && profile?.last_name
                   ? `${profile.first_name} ${profile.last_name}`
-                  : profile?.email || 'Admin User'}
+                  : profile?.email || t('common.admin')}
               </p>
               <p className="text-xs text-gray-400 capitalize">{profile?.role || 'admin'}</p>
             </div>
@@ -211,7 +216,9 @@ export default function AdminSidebar({ onToggleCollapse }: AdminSidebarProps) {
                   } transition-colors duration-200 ease-in-out ${collapsed ? 'justify-center' : ''}`}
                 >
                   <span className="flex-shrink-0">{item.icon}</span>
-                  {!collapsed && <span className="ml-3">{item.name}</span>}
+                  {!collapsed && (
+                    <span className="ml-3">{t(item.translateKey)}</span>
+                  )}
                 </Link>
               </li>
             );
@@ -235,7 +242,7 @@ export default function AdminSidebar({ onToggleCollapse }: AdminSidebarProps) {
               d="M10 19l-7-7m0 0l7-7m-7 7h18"
             />
           </svg>
-          {!collapsed && <span className="ml-3">Return to Site</span>}
+          {!collapsed && <span className="ml-3">{t('sidebar.returnToSite')}</span>}
         </Link>
 
         <button
@@ -252,7 +259,7 @@ export default function AdminSidebar({ onToggleCollapse }: AdminSidebarProps) {
               d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
             />
           </svg>
-          {!collapsed && <span className="ml-3">Logout</span>}
+          {!collapsed && <span className="ml-3">{t('sidebar.logout')}</span>}
         </button>
       </div>
     </div>

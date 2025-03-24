@@ -1,0 +1,92 @@
+{
+  "layout": {
+    "title": "Study Bridge Admin paneli",
+    "adminAccess": "Admin kirishi",
+    "authorizedVia": "Kirish ruxsati orqali",
+    "specialPrivileges": "maxsus admin huquqlari",
+    "email": "elektron pochta",
+    "userId": "Foydalanuvchi ID",
+    "profile": "Profil",
+    "found": "Topildi",
+    "notFound": "Topilmadi",
+    "metadataRole": "Metadata rol",
+    "notSet": "O'rnatilmagan"
+  },
+  "sidebar": {
+    "dashboard": "Boshqaruv paneli",
+    "universities": "Universitetlar",
+    "programs": "Dasturlar",
+    "scholarships": "Stipendiyalar",
+    "users": "Foydalanuvchilar",
+    "settings": "Sozlamalar",
+    "returnToSite": "Saytga qaytish",
+    "logout": "Chiqish",
+    "toggleSidebar": "Yon panelni yashirish/ko'rsatish"
+  },
+  "header": {
+    "settings": "Sozlamalar",
+    "profile": "Profil",
+    "logout": "Chiqish"
+  },
+  "dashboard": {
+    "title": "Boshqaruv paneli",
+    "stats": {
+      "totalUniversities": "Jami universitetlar",
+      "activePrograms": "Faol dasturlar",
+      "availableScholarships": "Mavjud stipendiyalar",
+      "registeredUsers": "Ro'yxatdan o'tgan foydalanuvchilar"
+    },
+    "recentActivity": {
+      "title": "So'nggi faoliyat",
+      "viewAll": "Barcha faoliyatni ko'rish",
+      "newUser": "Yangi foydalanuvchi ro'yxatdan o'tdi",
+      "programUpdated": "Dastur yangilandi",
+      "newUniversity": "Yangi universitet qo'shildi",
+      "scholarshipUpdated": "Stipendiya muddati yangilandi",
+      "by": "Tomonidan",
+      "item": "Element",
+      "time": {
+        "minutesAgo": "daqiqa oldin",
+        "hoursAgo": "soat oldin",
+        "daysAgo": "kun oldin"
+      }
+    },
+    "quickActions": {
+      "title": "Tezkor harakatlar",
+      "addUniversity": "Universitet qo'shish",
+      "addUniversityDesc": "Yangi universitet profilini yaratish",
+      "addProgram": "Dastur qo'shish",
+      "addProgramDesc": "Yangi o'quv dasturini yaratish",
+      "addScholarship": "Stipendiya qo'shish",
+      "addScholarshipDesc": "Yangi stipendiya taklifini yaratish",
+      "addAdminUser": "Admin foydalanuvchi qo'shish",
+      "addAdminUserDesc": "Yangi administrator yaratish"
+    }
+  },
+  "common": {
+    "viewAll": "Hammasini ko'rish",
+    "admin": "Admin",
+    "dashboard": "Boshqaruv paneli",
+    "created": "yaratildi",
+    "updated": "yangilandi",
+    "deleted": "o'chirildi",
+    "search": "Qidirish",
+    "filter": "Filtrlash",
+    "actions": "Harakatlar",
+    "edit": "Tahrirlash",
+    "delete": "O'chirish",
+    "save": "Saqlash",
+    "cancel": "Bekor qilish",
+    "back": "Orqaga",
+    "submit": "Yuborish",
+    "loading": "Yuklanmoqda",
+    "noData": "Ma'lumotlar mavjud emas",
+    "success": "Muvaffaqiyatli",
+    "error": "Xatolik",
+    "confirmation": "Tasdiqlash",
+    "areYouSure": "Ishonchingiz komilmi?",
+    "thisActionCannotBeUndone": "Bu amalni bekor qilib bo'lmaydi",
+    "yes": "Ha",
+    "no": "Yo'q"
+  }
+} 

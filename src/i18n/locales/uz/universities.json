@@ -1,0 +1,51 @@
+{
+  "page": {
+    "title": "Universitetlar",
+    "subtitle": "Xalqaro talabalar uchun Xitoydagi nufuzli universitetlarni ko'rib chiqing"
+  },
+  "filters": {
+    "title": "Universitetlarni filtrlash",
+    "province": "Viloyat",
+    "city": "Shahar",
+    "ranking": "Reyting",
+    "type": "Tur",
+    "hasEnglishPrograms": "Ingliz tilidagi dasturlar",
+    "tuition": "O'qish to'lovi",
+    "hasDormitory": "Yotoqxonaga ega",
+    "specialization": "Ixtisoslik",
+    "reset": "Qayta o'rnatish",
+    "apply": "Filtrlarni qo'llash"
+  },
+  "emptyState": {
+    "title": "Universitetlar topilmadi",
+    "subtitle": "Qidiruv filtrlarini o'zgartirib ko'ring"
+  },
+  "details": {
+    "about": "Universitet haqida",
+    "facilities": "Infratuzilma",
+    "tuitionAndCosts": "O'qish to'lovi va xarajatlar",
+    "programs": "Mavjud dasturlar",
+    "campusGallery": "Kampus galereyasi",
+    "contactInfo": "Aloqa ma'lumotlari",
+    "dormitories": "Kampus yotoqxonalari",
+    "library": "Kutubxona",
+    "sportsFacilities": "Sport inshootlari",
+    "cafeterias": "Oshxonalar",
+    "annualTuition": "Yillik o'qish to'lovi",
+    "livingExpenses": "Yashash xarajatlari",
+    "livingExpensesNote": "Turar joy, oziq-ovqat, transport va boshqa kundalik ehtiyojlarni o'z ichiga oladi",
+    "noPrograms": {
+      "title": "Mavjud dasturlar yo'q",
+      "description1": "Hozircha bu universitet uchun hech qanday dastur topa olmadik.",
+      "description2": "Keyinroq tekshiring yoki to'g'ridan-to'g'ri universitet bilan bog'laning."
+    },
+    "address": "Manzil",
+    "email": "Elektron pochta",
+    "phone": "Telefon",
+    "website": "Veb-sayt",
+    "notAvailable": "Mavjud emas",
+    "visitWebsite": "Veb-saytga tashrif buyuring",
+    "applyNow": "Hozir murojaat qiling",
+    "rank": "Reyting"
+  }
+}
