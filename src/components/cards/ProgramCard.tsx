@@ -1,7 +1,7 @@
 'use client'
 
 import { FC } from 'react'
-import Link from 'next/link'
+import { Link } from '@/i18n/utils'
 import { Program } from '@/types/database.types'
 import { Locale } from '@/i18n/config'
 
@@ -239,7 +239,7 @@ export const ProgramCard: FC<ProgramCardProps> = ({
         <div className="border-t border-gray-200 pt-4 flex justify-between items-center">
           <div>
             <Link 
-              href={`/${locale}/universities/${program.university_id}`}
+              href={`/universities/${program.university_id}`}
               className="inline-flex items-center text-sm text-blue-600 hover:text-blue-800"
             >
               <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -249,7 +249,7 @@ export const ProgramCard: FC<ProgramCardProps> = ({
             </Link>
           </div>
           <Link 
-            href={`/${locale}/programs/${program.id}`}
+            href={`/programs/${program.id}`}
             className="inline-flex items-center px-3 py-1.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium"
           >
             {t.moreDetails}

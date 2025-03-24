@@ -105,7 +105,7 @@ export default async function HomePage({
         <div className="container mx-auto px-4">
           <div className="flex justify-between items-center mb-10">
             <h2 className="text-3xl font-bold">{t('popularPrograms.title')}</h2>
-            <Link href={`/${locale}/programs`} className="text-blue-600 hover:text-blue-800 font-medium flex items-center gap-2 group">
+            <Link href="/programs" className="text-blue-600 hover:text-blue-800 font-medium flex items-center gap-2 group">
               {t('popularPrograms.viewAll')} 
               <span className="group-hover:translate-x-1 transition-transform duration-300">→</span>
             </Link>
@@ -147,7 +147,7 @@ export default async function HomePage({
                     </span>
                     <span className="font-medium">${(item * 5000).toLocaleString()} / year</span>
                   </div>
-                  <Link href={`/${locale}/programs/${item}`}>
+                  <Link href={`/programs/${item}`}>
                     <Button variant="outline" className="w-full hover:bg-blue-50 hover:text-blue-700 transition-colors">
                       {t('popularPrograms.viewDetails')}
                     </Button>
@@ -165,12 +165,12 @@ export default async function HomePage({
           <h2 className="text-3xl md:text-4xl font-bold mb-4">{t('cta.title')}</h2>
           <p className="text-lg text-blue-100 max-w-2xl mx-auto mb-10">{t('cta.subtitle')}</p>
           <div className="flex flex-wrap justify-center gap-6">
-            <Link href={`/${locale}/programs`}>
+            <Link href="/programs">
               <Button size="lg" className="bg-white text-blue-700 hover:bg-blue-50 rounded-full px-8 shadow-lg">
                 {t('cta.browseButton')}
               </Button>
             </Link>
-            <Link href={`/${locale}/contact`}>
+            <Link href="/contact">
               <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10 rounded-full px-8">
                 {t('cta.contactButton')}
               </Button>

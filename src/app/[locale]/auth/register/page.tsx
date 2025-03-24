@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 import RegisterForm from '@/components/auth/RegisterForm';
-import Link from 'next/link';
+import { Link } from '@/i18n/utils';
 import { getTranslations } from '@/i18n/utils';
 
 export const metadata: Metadata = {
@@ -46,7 +46,7 @@ export default async function RegisterPage({
             <p className="text-sm text-gray-600">
               {t('auth.haveAccount')}{' '}
               <Link 
-                href={`/${locale}/auth/login`}
+                href="/auth/login"
                 className="text-blue-600 hover:text-blue-800 font-medium"
               >
                 {t('auth.signIn')}

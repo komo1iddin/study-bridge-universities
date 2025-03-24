@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 import LoginForm from '@/components/auth/LoginForm';
-import Link from 'next/link';
+import { Link } from '@/i18n/utils';
 import { getTranslations } from '@/i18n/utils';
 import { Locale } from '@/i18n/config';
 
@@ -43,7 +43,7 @@ export default async function LoginPage({
             <p className="text-sm text-gray-600">
               {t('auth.noAccount')}{' '}
               <Link 
-                href={`/${locale}/auth/register`}
+                href="/auth/register"
                 className="text-blue-600 hover:text-blue-800 font-medium"
               >
                 {t('auth.signUp')}
