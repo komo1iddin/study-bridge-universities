@@ -162,19 +162,19 @@ export default function SidebarWithTranslations({ onToggleCollapse }: SidebarWit
   return (
     <NextIntlClientProvider locale={locale} messages={translations}>
       <div
-        className={`bg-gray-900 text-white ${
-          collapsed ? 'w-16' : 'w-64'
-        } min-h-screen transition-all duration-300 ease-in-out fixed left-0 top-0 z-40`}
+        className={`bg-white text-gray-700 shadow-lg ${
+          collapsed ? 'w-20' : 'w-72'
+        } min-h-screen transition-all duration-300 ease-in-out fixed left-0 top-0 z-40 border-r border-gray-200`}
       >
-        <div className="flex items-center justify-between h-16 px-4 border-b border-gray-800">
+        <div className="flex items-center justify-between h-16 px-4 border-b border-gray-200">
           {!collapsed && (
-            <div className="text-xl font-semibold">
-              StudyBridge <span className="text-blue-400">Admin</span>
+            <div className="text-xl font-bold text-blue-600 transition-all duration-300">
+              StudyBridge <span className="text-blue-500">Admin</span>
             </div>
           )}
           <button 
             onClick={toggleSidebar} 
-            className="p-1 rounded-md hover:bg-gray-700"
+            className={`p-2 rounded-md hover:bg-gray-100 text-gray-500 ${collapsed ? 'mx-auto' : 'ml-auto'}`}
             aria-label="Toggle Sidebar"
           >
             {collapsed ? (
@@ -190,26 +190,26 @@ export default function SidebarWithTranslations({ onToggleCollapse }: SidebarWit
         </div>
 
         {/* User info */}
-        <div className="px-4 py-3 border-b border-gray-800">
-          <div className="flex items-center">
-            <div className="flex-shrink-0 w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center">
+        <div className={`px-4 py-5 border-b border-gray-200 ${collapsed ? 'text-center' : ''}`}>
+          <div className={`flex ${collapsed ? 'justify-center' : 'items-center'}`}>
+            <div className="flex-shrink-0 w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-blue-600 flex items-center justify-center text-white font-medium text-lg">
               {profile?.first_name ? profile.first_name[0] : 'A'}
             </div>
             {!collapsed && (
               <div className="ml-3">
-                <p className="text-sm font-medium">
+                <p className="text-sm font-semibold text-gray-800">
                   {profile?.first_name && profile?.last_name
                     ? `${profile.first_name} ${profile.last_name}`
                     : profile?.email || "Admin"}
                 </p>
-                <p className="text-xs text-gray-400 capitalize">{profile?.role || 'admin'}</p>
+                <p className="text-xs text-gray-500 mt-0.5 capitalize">{profile?.role || 'admin'}</p>
               </div>
             )}
           </div>
         </div>
 
         {/* Navigation */}
-        <nav className="mt-4">
+        <nav className="mt-5 px-2">
           <ul className="space-y-1">
             {navigationItems.map((item) => {
               const isActive = isPathActive(item.href);
@@ -217,17 +217,20 @@ export default function SidebarWithTranslations({ onToggleCollapse }: SidebarWit
                 <li key={item.id}>
                   <Link
                     href={item.href}
-                    className={`flex items-center px-4 py-2 ${
-                      isActive
-                        ? 'bg-blue-700 text-white'
-                        : 'text-gray-300 hover:bg-gray-800 hover:text-white'
-                    } transition-colors duration-200 ease-in-out ${collapsed ? 'justify-center' : ''}`}
+                    className={`flex items-center px-4 py-3 rounded-lg transition-colors duration-200 ease-in-out 
+                    ${isActive
+                        ? 'bg-blue-50 text-blue-600'
+                        : 'text-gray-600 hover:bg-gray-100 hover:text-blue-600'
+                    } ${collapsed ? 'justify-center' : ''}`}
                   >
-                    <span className="flex-shrink-0">{item.icon}</span>
+                    <span className={`flex-shrink-0 ${isActive ? 'text-blue-600' : 'text-gray-500'}`}>{item.icon}</span>
                     {!collapsed && (
-                      <span className="ml-3">
+                      <span className={`ml-3 font-medium ${isActive ? 'text-blue-600' : ''}`}>
                         {translations.admin.sidebar[item.id as keyof typeof translations.admin.sidebar]}
                       </span>
+                    )}
+                    {isActive && !collapsed && (
+                      <span className="ml-auto h-2 w-2 rounded-full bg-blue-600"></span>
                     )}
                   </Link>
                 </li>
@@ -237,10 +240,10 @@ export default function SidebarWithTranslations({ onToggleCollapse }: SidebarWit
         </nav>
 
         {/* Bottom buttons at the bottom */}
-        <div className="absolute bottom-0 w-full border-t border-gray-800 p-4 space-y-2">
+        <div className={`absolute bottom-0 w-full border-t border-gray-200 p-4 bg-white ${collapsed ? 'space-y-4' : 'space-y-3'}`}>
           <Link
             href="/"
-            className={`flex items-center text-gray-300 hover:text-white transition-colors duration-200 ease-in-out ${
+            className={`flex items-center text-gray-600 hover:text-blue-600 transition-colors duration-200 px-4 py-2 rounded-lg hover:bg-gray-100 ${
               collapsed ? 'justify-center' : ''
             }`}
           >
@@ -252,12 +255,12 @@ export default function SidebarWithTranslations({ onToggleCollapse }: SidebarWit
                 d="M10 19l-7-7m0 0l7-7m-7 7h18"
               />
             </svg>
-            {!collapsed && <span className="ml-3">{translations.admin.sidebar.returnToSite}</span>}
+            {!collapsed && <span className="ml-3 font-medium">{translations.admin.sidebar.returnToSite}</span>}
           </Link>
 
           <button
             onClick={handleLogout}
-            className={`flex items-center text-red-400 hover:text-red-300 transition-colors duration-200 ease-in-out w-full ${
+            className={`flex items-center text-gray-600 hover:text-red-600 transition-colors duration-200 w-full px-4 py-2 rounded-lg hover:bg-gray-100 ${
               collapsed ? 'justify-center' : ''
             }`}
           >
@@ -269,7 +272,7 @@ export default function SidebarWithTranslations({ onToggleCollapse }: SidebarWit
                 d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
               />
             </svg>
-            {!collapsed && <span className="ml-3">{translations.admin.sidebar.logout}</span>}
+            {!collapsed && <span className="ml-3 font-medium">{translations.admin.sidebar.logout}</span>}
           </button>
         </div>
       </div>
