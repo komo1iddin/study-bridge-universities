@@ -12,9 +12,12 @@ export const metadata: Metadata = {
 export default async function LoginPage({
   params,
 }: {
-  params: { locale: string };
+  params: Promise<{ locale: string }> | { locale: string };
 }) {
-  const locale = params.locale;
+  // Await params if it's a Promise, otherwise use it directly
+  const resolvedParams = await Promise.resolve(params);
+  const locale = resolvedParams.locale;
+  
   const translations = await getTranslations(locale, ['common']);
   const t = (key: string) => {
     const parts = key.split('.');
@@ -34,7 +37,7 @@ export default async function LoginPage({
             {t('auth.signIn')}
           </h1>
           
-          <LoginForm locale={locale} />
+          <LoginForm />
           
           <div className="mt-6 text-center">
             <p className="text-sm text-gray-600">

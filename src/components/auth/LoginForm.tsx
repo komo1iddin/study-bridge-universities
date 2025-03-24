@@ -1,32 +1,36 @@
 'use client';
 
 import { useState, useCallback } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import { signIn } from '@/lib/auth';
 import { useLocale, useTranslations } from 'next-intl';
 import { useToast } from '@/contexts/ToastContext';
+import { redirectWithLocale } from '@/lib/session-utils';
 
 export default function LoginForm() {
-  const router = useRouter();
   const searchParams = useSearchParams();
   const locale = useLocale();
-  const t = useTranslations('auth');
+  const t = useTranslations('common');
   const { showToast } = useToast();
   
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
 
   const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
     setIsLoading(true);
+    setIsSuccess(false);
 
     try {
+      console.log('Starting login process...');
       const { user, error } = await signIn(email, password);
       
       if (error) {
+        console.error('Sign-in error:', error.message);
         setError(error.message);
         showToast(error.message, 'error');
         setIsLoading(false);
@@ -34,21 +38,25 @@ export default function LoginForm() {
       }
       
       if (user) {
-        // Show success toast
-        showToast(t('loginSuccess'), 'success');
+        console.log('Login successful for user:', user.id);
+        // Show success toast and set success state
+        showToast('Login successful', 'success');
+        setIsSuccess(true);
         
         // Get the redirect URL from search params, or default to profile
-        const redirectTo = searchParams.get('redirect') || `/${locale}/profile`;
-        router.push(redirectTo);
-        router.refresh();
+        const redirectPath = searchParams.get('redirect') || `/profile`;
+        
+        // Use our utility function for redirecting with locale
+        redirectWithLocale(locale, redirectPath);
       }
     } catch (err) {
+      console.error('Unexpected error during login:', err);
+      setIsLoading(false);
       const errorMsg = (err as Error).message;
       setError(errorMsg);
       showToast(errorMsg, 'error');
-      setIsLoading(false);
     }
-  }, [email, password, router, searchParams, locale, t, showToast]);
+  }, [email, password, locale, searchParams, showToast]);
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
@@ -58,9 +66,15 @@ export default function LoginForm() {
         </div>
       )}
       
+      {isSuccess && (
+        <div className="bg-green-50 text-green-600 p-3 rounded-md text-sm">
+          Login successful! Redirecting you...
+        </div>
+      )}
+      
       <div>
         <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-          {t('email')}
+          {t('auth.email')}
         </label>
         <input
           id="email"
@@ -69,13 +83,13 @@ export default function LoginForm() {
           onChange={(e) => setEmail(e.target.value)}
           required
           className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-          placeholder={t('emailPlaceholder')}
+          placeholder={t('auth.emailPlaceholder')}
         />
       </div>
       
       <div>
         <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
-          {t('password')}
+          {t('auth.password')}
         </label>
         <input
           id="password"
@@ -84,7 +98,7 @@ export default function LoginForm() {
           onChange={(e) => setPassword(e.target.value)}
           required
           className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-          placeholder={t('passwordPlaceholder')}
+          placeholder={t('auth.passwordPlaceholder')}
         />
       </div>
       
@@ -97,13 +111,13 @@ export default function LoginForm() {
             className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
           />
           <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-700">
-            {t('rememberMe')}
+            {t('auth.rememberMe')}
           </label>
         </div>
         
         <div className="text-sm">
           <a href="#" className="font-medium text-blue-600 hover:text-blue-500">
-            {t('forgotPassword')}
+            {t('auth.forgotPassword')}
           </a>
         </div>
       </div>
@@ -111,10 +125,10 @@ export default function LoginForm() {
       <div>
         <button
           type="submit"
-          disabled={isLoading}
+          disabled={isLoading || isSuccess}
           className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {isLoading ? t('signingIn') : t('signIn')}
+          {isLoading ? t('auth.signingIn') : isSuccess ? 'Redirecting...' : t('auth.signIn')}
         </button>
       </div>
     </form>

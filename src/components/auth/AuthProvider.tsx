@@ -4,7 +4,7 @@ import { createContext, useContext, useEffect, useState, ReactNode, useMemo } fr
 import { supabase } from '@/lib/supabase';
 import { User as AuthUser } from '@supabase/supabase-js'; 
 import { User } from '@/types/database.types';
-import { useRouter } from 'next/navigation';
+import { useRouter } from '@/i18n/utils';
 import { getUserProfile } from '@/lib/auth';
 
 type AuthContextType = {
@@ -208,8 +208,11 @@ export function AuthProvider({ children }: AuthProviderProps) {
     // Initial auth state check
     const checkUser = async () => {
       try {
+        console.log('Checking initial auth session...');
         const { data } = await supabase.auth.getSession();
-        setUser(data.session?.user || null);
+        const sessionUser = data.session?.user || null;
+        console.log('Initial session check:', sessionUser ? 'User authenticated' : 'No user session');
+        setUser(sessionUser);
       } catch (err) {
         console.error('Error checking auth session:', err);
         setError((err as Error).message);
@@ -223,13 +226,23 @@ export function AuthProvider({ children }: AuthProviderProps) {
     // Set up auth state change listener
     const { data: authListener } = supabase.auth.onAuthStateChange(
       async (event, session) => {
-        setUser(session?.user || null);
+        console.log('Auth state change event:', event);
+        
+        if (session?.user) {
+          console.log('User present in session after', event, 'event');
+          setUser(session.user);
+        } else {
+          console.log('No user in session after', event, 'event');
+          setUser(null);
+        }
         
         if (event === 'SIGNED_IN' || event === 'USER_UPDATED') {
+          console.log('User signed in or updated, refreshing app state');
           router.refresh();
         }
         
         if (event === 'SIGNED_OUT') {
+          console.log('User signed out, clearing profile and refreshing app');
           setProfile(null);
           router.refresh();
         }
@@ -237,6 +250,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     );
 
     return () => {
+      console.log('Cleaning up auth listener subscription');
       authListener.subscription.unsubscribe();
     };
   }, [router]);

@@ -78,23 +78,38 @@ ALTER TABLE favorites ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "Users can view their own data" ON users
   FOR SELECT USING (auth.uid() = id);
 
-CREATE POLICY "Admin can view all users" ON users
-  FOR SELECT USING (
-    EXISTS (
-      SELECT 1 FROM users WHERE id = auth.uid() AND role = 'admin'
-    )
+CREATE POLICY "Users can insert their own data" ON users
+  FOR INSERT WITH CHECK (auth.uid() = id);
+
+CREATE POLICY "Users can update their own data" ON users
+  FOR UPDATE USING (auth.uid() = id);
+
+-- Fixed admin policy to avoid recursion by using auth.jwt() instead of querying the users table
+CREATE POLICY "Admin can manage all users" ON users
+  FOR ALL USING (
+    coalesce((auth.jwt() -> 'role')::text, '""') = '"admin"'
   );
 
 -- RLS Policies for applications
 CREATE POLICY "Users can view their own applications" ON applications
   FOR SELECT USING (auth.uid() = user_id);
 
+CREATE POLICY "Users can create their own applications" ON applications
+  FOR INSERT WITH CHECK (auth.uid() = user_id);
+
+CREATE POLICY "Users can update their own applications" ON applications
+  FOR UPDATE USING (auth.uid() = user_id);
+
 CREATE POLICY "Managers can view assigned applications" ON applications
   FOR SELECT USING (
     auth.uid() = assigned_manager_id OR
-    EXISTS (
-      SELECT 1 FROM users WHERE id = auth.uid() AND role IN ('admin', 'manager')
-    )
+    coalesce((auth.jwt() -> 'role')::text, '""') IN ('"admin"', '"manager"')
+  );
+
+CREATE POLICY "Managers can update assigned applications" ON applications
+  FOR UPDATE USING (
+    auth.uid() = assigned_manager_id OR
+    coalesce((auth.jwt() -> 'role')::text, '""') IN ('"admin"', '"manager"')
   );
 
 -- RLS Policies for documents
@@ -105,13 +120,26 @@ CREATE POLICY "Users can view their own documents" ON documents
     )
   );
 
+CREATE POLICY "Users can insert their own documents" ON documents
+  FOR INSERT WITH CHECK (
+    EXISTS (
+      SELECT 1 FROM applications WHERE id = application_id AND user_id = auth.uid()
+    )
+  );
+
+CREATE POLICY "Users can update their own documents" ON documents
+  FOR UPDATE USING (
+    EXISTS (
+      SELECT 1 FROM applications WHERE id = application_id AND user_id = auth.uid()
+    )
+  );
+
 CREATE POLICY "Managers can view assigned application documents" ON documents
   FOR SELECT USING (
     EXISTS (
       SELECT 1 FROM applications a
-      JOIN users u ON u.id = auth.uid()
       WHERE a.id = application_id AND 
-      (a.assigned_manager_id = auth.uid() OR u.role IN ('admin', 'manager'))
+      (a.assigned_manager_id = auth.uid() OR coalesce((auth.jwt() -> 'role')::text, '""') IN ('"admin"', '"manager"'))
     )
   );
 
@@ -123,9 +151,22 @@ CREATE POLICY "Users can view their own communications" ON communications
     ) OR user_id = auth.uid() OR manager_id = auth.uid()
   );
 
+CREATE POLICY "Users can create communications" ON communications
+  FOR INSERT WITH CHECK (
+    EXISTS (
+      SELECT 1 FROM applications WHERE id = application_id AND user_id = auth.uid()
+    ) OR user_id = auth.uid()
+  );
+
 -- RLS Policies for favorites
 CREATE POLICY "Users can view their own favorites" ON favorites
   FOR SELECT USING (auth.uid() = user_id);
+
+CREATE POLICY "Users can insert their own favorites" ON favorites
+  FOR INSERT WITH CHECK (auth.uid() = user_id);
+
+CREATE POLICY "Users can delete their own favorites" ON favorites
+  FOR DELETE USING (auth.uid() = user_id);
 
 -- Add triggers for updated_at columns
 CREATE TRIGGER set_users_updated_at

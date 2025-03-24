@@ -4,12 +4,12 @@ import { supabaseAdmin } from '@/lib/supabase-admin';
 // Add a debug endpoint to check if the API is accessible and the service role key is working
 export async function GET() {
   try {
-    // Test the connection to Supabase with admin rights
+    // Test the connection to Supabase with admin rights using a simpler query
+    // that's compatible with different versions of PostgREST
     const { data, error } = await supabaseAdmin
       .from('users')
-      .select('count(*)')
-      .limit(1)
-      .single();
+      .select('id')
+      .limit(1);
     
     if (error) {
       console.error('Supabase Admin connection test failed:', error);
@@ -94,117 +94,70 @@ export async function POST(req: NextRequest) {
       );
     }
     
-    // Check if profile already exists
+    // First try to check if profile already exists (does not modify data)
     console.log('Checking if profile exists for userId:', userId);
-    const { data: existingProfile, error: checkError } = await supabaseAdmin
-      .from('users')
-      .select('*')
-      .eq('id', userId)
-      .maybeSingle();
-    
-    if (checkError) {
-      console.error('Error checking for existing profile:', checkError);
-      // Special handling for recursion in RLS policy
-      if (checkError.code === '42P17') {
-        console.error('DETECTED RLS RECURSION ERROR in policy for users table. This needs to be fixed in Supabase.');
-        console.error('Attempting to continue by using admin client which bypasses RLS...');
+    try {
+      const { data: existingProfile, error: checkError } = await supabaseAdmin
+        .from('users')
+        .select('*')
+        .eq('id', userId)
+        .maybeSingle();
+      
+      if (!checkError && existingProfile) {
+        // Profile already exists, just return it
+        console.log('Profile already exists, returning:', existingProfile);
+        return NextResponse.json({
+          profile: existingProfile,
+          message: 'Profile already exists'
+        });
       }
       
-      return NextResponse.json(
-        { 
-          error: checkError.message,
-          details: {
-            code: checkError.code,
-            hint: checkError.hint
-          }
-        },
-        { status: 500 }
-      );
-    }
-    
-    if (existingProfile) {
-      // Profile already exists, just return it
-      console.log('Profile already exists, returning:', existingProfile);
-      const response = {
-        profile: existingProfile,
-        message: 'Profile already exists'
-      };
-      console.log('Sending response:', response);
-      return NextResponse.json(response);
+      if (checkError && checkError.code !== '42P17') {
+        // Only log non-recursion errors
+        console.error('Error checking for existing profile:', checkError);
+      }
+    } catch (checkErr) {
+      console.error('Unexpected error checking for profile:', checkErr);
+      // Continue to try creating the profile using RPC
     }
 
-    // Insert the user profile using admin privileges to bypass RLS
-    console.log('Creating new profile for userId:', userId);
-    const timestamp = new Date().toISOString();
-    const { data, error } = await supabaseAdmin
-      .from('users')
-      .insert({
-        id: userId,
-        email: userData.email,
-        role: userData.role || 'client',
-        created_at: timestamp,
-        updated_at: timestamp
-      })
-      .select()
-      .single();
+    // Use RPC to safely create the profile without hitting RLS recursion
+    console.log('Creating profile via RPC for userId:', userId);
+    const { data, error } = await supabaseAdmin.rpc('create_user_profile', {
+      user_id: userId,
+      user_email: userData.email,
+      user_role: userData.role || 'client'
+    });
     
     if (error) {
-      console.error('Error creating user profile:', error);
-      // Special handling for recursion in RLS policy
-      if (error.code === '42P17') {
-        console.error('DETECTED RLS RECURSION ERROR in policy for users table. This needs to be fixed in Supabase.');
-        console.error('Please modify your RLS policies in the Supabase dashboard.');
-        
-        // Try again with a direct SQL query if possible
-        try {
-          console.log('Attempting direct SQL insert as a fallback...');
-          const { data: sqlData, error: sqlError } = await supabaseAdmin.rpc('create_user_profile', { 
-            user_id: userId,
-            user_email: userData.email,
-            user_role: userData.role || 'client'
-          });
-          
-          if (sqlError) {
-            console.error('SQL fallback also failed:', sqlError);
-          } else if (sqlData) {
-            console.log('SQL fallback succeeded:', sqlData);
-            return NextResponse.json({
-              profile: sqlData,
-              message: 'Profile created successfully via SQL fallback'
-            });
-          }
-        } catch (sqlAttemptError) {
-          console.error('Error in SQL fallback attempt:', sqlAttemptError);
-        }
-      }
-      
+      console.error('Error creating user profile via RPC:', error);
       return NextResponse.json(
         { 
           error: error.message,
           details: {
             code: error.code,
-            hint: error.hint
-          }
+            hint: error.hint || 'No hint available',
+            details: error.details || 'No details available'
+          },
+          solution: 'Please check if the create_user_profile function exists in your database'
         },
         { status: 500 }
       );
     }
     
     if (!data) {
-      console.error('Profile created but no data returned from Supabase');
+      console.error('Profile creation returned no data');
       return NextResponse.json(
-        { error: 'Profile created but database returned no data' },
+        { error: 'Profile creation succeeded but returned no data' },
         { status: 500 }
       );
     }
     
     console.log('Profile created successfully:', data);
-    const response = { 
+    return NextResponse.json({
       profile: data,
       message: 'Profile created successfully'
-    };
-    console.log('Sending response:', response);
-    return NextResponse.json(response);
+    });
   } catch (error) {
     console.error('Unexpected error creating profile:', error);
     return NextResponse.json(

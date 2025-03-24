@@ -11,9 +11,12 @@ export const metadata: Metadata = {
 export default async function RegisterPage({
   params,
 }: {
-  params: { locale: string };
+  params: Promise<{ locale: string }> | { locale: string };
 }) {
-  const locale = params.locale;
+  // Await params if it's a Promise, otherwise use it directly
+  const resolvedParams = await Promise.resolve(params);
+  const locale = resolvedParams.locale;
+  
   const translations = await getTranslations(locale, ['common']);
   const t = (key: string) => {
     const parts = key.split('.');
@@ -37,7 +40,7 @@ export default async function RegisterPage({
             Just enter your email and password to get started. You can add personal details later.
           </p>
           
-          <RegisterForm locale={locale} />
+          <RegisterForm />
           
           <div className="mt-6 text-center">
             <p className="text-sm text-gray-600">

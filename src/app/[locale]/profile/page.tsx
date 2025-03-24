@@ -13,9 +13,11 @@ export const metadata: Metadata = {
 export default async function ProfilePage({
   params,
 }: {
-  params: { locale: string };
+  params: Promise<{ locale: string }> | { locale: string };
 }) {
-  const locale = params.locale;
+  // Await params if it's a Promise, otherwise use it directly
+  const resolvedParams = await Promise.resolve(params);
+  const locale = resolvedParams.locale;
   
   // Create a Supabase client for server-side rendering
   const cookieStore = await cookies();
